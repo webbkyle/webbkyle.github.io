@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How many fraudulent Social Security beneficiaries are there? — Kyle Webb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<style>
+.widget { border: 1px solid var(--faint); border-radius: 12px; padding: 22px 24px; margin: 26px 0; background: #ffffff; }
+.widget h3 { font-family: var(--serif); font-size: 19px; margin: 0 0 4px; }
+.controls { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 28px; margin: 18px 0 6px; }
+@media (max-width: 600px) { .controls { grid-template-columns: 1fr; } }
+.ctl label { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); display: block; margin-bottom: 2px; }
+.ctl output { font-family: var(--mono); font-size: 12px; color: var(--ink); display: block; margin-bottom: 6px; }
+input[type=range] { width: 100%; accent-color: var(--accent); }
+.seg { display: flex; gap: 8px; flex-wrap: wrap; margin: 4px 0 2px; }
+.seg button { font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; background: transparent; border: 1px solid var(--faint); border-radius: 999px; padding: 7px 16px; cursor: pointer; color: var(--ink-soft); }
+.seg button.on { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.seg button:hover { border-color: var(--ink); }
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 18px; }
+.ro { border-top: 1px solid var(--faint); padding-top: 8px; }
+.ro .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.ro .v { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.ro .s { font-size: 12px; color: var(--muted); }
+svg.chart { width: 100%; height: auto; display: block; margin-top: 10px; }
+.chart-note { font-size: 13px; color: var(--muted); margin-top: 6px; }
+table.data { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 14px 0; }
+table.data th { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--faint); }
+table.data td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--faint); vertical-align: top; }
+table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.legend { display: flex; gap: 18px; flex-wrap: wrap; margin-top: 8px; font-size: 13px; color: var(--muted); }
+.legend .sw { display: inline-block; width: 22px; height: 3px; border-radius: 2px; vertical-align: middle; margin-right: 6px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+<p class="name">Kyle Webb</p>
+<p class="tagline">Staff Data Scientist — statistics, data engineering, and applied AI</p>
+<nav>
+<a href="/">Bio</a>
+<a href="/resume/">Resume</a>
+<a href="/cv/">CV</a>
+<a href="/mini-projects/" class="active">Mini Project Space</a>
+</nav>
+</header>
+
+<main>
+<h1>How many fraudulent Social Security beneficiaries are there?</h1>
+<p class="muted">A Bayesian estimate from DOGE's flagged records and SSA's own books.</p>
+<p class="tags"><span class="tag">Bayesian inference</span><span class="tag">Public data</span><span class="tag">Interactive</span></p>
+
+<h2>The claim</h2>
+<p>In early 2025, Elon Musk and the Department of Government Efficiency (DOGE) claimed that millions of dead people were marked as alive in Social Security's database — "tens of millions," Musk posted, "definitely dead" yet listed as alive — and announced that ~3.26 million numberholders aged 120+ had been reclassified as deceased in a records cleanup.</p>
+<p>The question everyone argued past each other on: <strong>flagged records are not payments.</strong> How many beneficiaries are actually fraudulent — actually receiving money they shouldn't get?</p>
+
+<h2>The data</h2>
+<table class="data">
+<tr><th>Figure</th><th>Value</th><th>Source</th></tr>
+<tr><td>OASDI beneficiaries, Dec 2024</td><td class="num">68,455,973</td><td>SSA Annual Statistical Supplement 2025, Table 5.A1</td></tr>
+<tr><td>Average monthly benefit, Dec 2024</td><td class="num">$1,834.43</td><td>Same table</td></tr>
+<tr><td>Numident records, born ≤1920, no death info</td><td class="num">18.9M</td><td>SSA OIG, July 2023</td></tr>
+<tr><td>Of those, receiving payments</td><td class="num">~44,000</td><td>SSA OIG, July 2023 (via secondary reporting; primary verification pending)</td></tr>
+<tr><td>DOGE reclassified age 120+</td><td class="num">3.26M records</td><td>DOGE announcement, Mar 2025 (via secondary reporting)</td></tr>
+<tr><td>OASI payments free of overpayment, FY2024</td><td class="num">99.91% ($1.62B improper)</td><td>SSA Agency Financial Report FY2024</td></tr>
+<tr><td>DI payments free of overpayment, FY2024</td><td class="num">98.72% ($2.34B improper)</td><td>Same</td></tr>
+<tr><td>OIG 2021: paid to deceased, 1998–2019</td><td class="num">$298M / ~24k cases</td><td>SSA OIG 2021 (procedural error, not fraud)</td></tr>
+</table>
+
+<h2>The model</h2>
+<p>Let <em>θ</em> be the probability that a reported beneficiary's payments are fraudulent or improper. Prior <em>θ ~ Beta(a, b)</em>, in three stances:</p>
+<ul class="tight">
+<li><strong>Skeptical</strong> (0.02%) — true fraud sits well below measured improper-payment rates, which are mostly errors.</li>
+<li><strong>Neutral</strong> (0.28%) — the blended OASDI stewardship improper-payment rate for FY2024, in dollar terms.</li>
+<li><strong>Alarmist</strong> (1.0%) — an order of magnitude above anything measured; the hidden-fraud thesis.</li>
+</ul>
+<p>Then <em>N<sub>fraud</sub> = R · θ</em> and <em>N<sub>actual</sub> = R − N<sub>fraud</sub></em>, with <em>R</em> = 68,455,973 treated as a known admin count. Separately, the <strong>ghost check</strong>: <em>π</em> = P(a flagged record is actually paid) ~ <em>Beta(44000, 18856000)</em> from the OIG's measurement, so <em>N<sub>paid</sub>(F) = F · π</em> for any flagged count <em>F</em>. Everything is conjugate, so every posterior below is closed-form — move the sliders and watch them update.</p>
+
+<h2>Explore the posteriors</h2>
+<div class="widget">
+<h3>Fraud-rate prior</h3>
+<p class="chart-note" style="margin-top:0">Pick a stance or drag the sliders. The posterior is the prior scaled by <em>R</em> = 68,455,973 reported beneficiaries — an <strong>upper bound</strong> on true fraud, since the stewardship rates feeding it count errors too.</p>
+<div class="seg" id="stanceSeg">
+<button data-m="0.0002" class="">Skeptical 0.02%</button>
+<button data-m="0.0028" class="on">Neutral 0.28%</button>
+<button data-m="0.01" class="">Alarmist 1.0%</button>
+</div>
+<div class="controls">
+<div class="ctl"><label>Prior mean fraud rate</label><output id="oMean"></output><input type="range" id="sMean" min="0" max="1000" value="500"></div>
+<div class="ctl"><label>Prior strength (pseudo-observations)</label><output id="oStr"></output><input type="range" id="sStr" min="0" max="1000" value="500"></div>
+</div>
+<svg class="chart" id="chartScale" viewBox="0 0 640 300" role="img" aria-label="Reported versus actual beneficiaries at program scale"></svg>
+<p class="chart-note"><strong>At program scale.</strong> The solid line (reported beneficiaries) never moves — <em>R</em> is treated as a known admin count. The dashed line (actual = reported − fraud) shifts with your prior, but even at the alarmist setting it's a rounding error against 68.5M.</p>
+<div class="legend"><span><span class="sw" style="background:#1c1917"></span>Reported (fixed)</span><span><span class="sw" style="background:#78716c"></span>Actual = reported − fraud</span></div>
+<svg class="chart" id="chartFraud" viewBox="0 0 640 300" role="img" aria-label="Fraudulent beneficiary posterior, zoomed"></svg>
+<p class="chart-note"><strong>Zoomed in.</strong> Posterior over fraudulent beneficiaries. Shaded band = 95% credible interval; line = posterior mean.</p>
+<div class="readouts">
+<div class="ro"><div class="k">Fraudulent / improper (mean)</div><div class="v" id="rMean">–</div></div>
+<div class="ro"><div class="k">95% credible interval</div><div class="v" id="rCI" style="font-size:16px">–</div></div>
+<div class="ro"><div class="k">Implied $/year</div><div class="v" id="rDol">–</div></div>
+<div class="ro"><div class="k">P(fraud &gt; 1M)</div><div class="v" id="rP1M">–</div></div>
+</div>
+</div>
+
+<h2>The ghost check</h2>
+<div class="widget">
+<h3>Flagged records → actual payments</h3>
+<p class="chart-note" style="margin-top:0">DOGE's numbers count <em>records</em>. The OIG measured what fraction of flagged-type records were actually paid: ~44,000 of 18.9M (≈0.23%). Apply that conversion to any flagged count.</p>
+<div class="seg" id="ghostSeg">
+<button data-f="3261057" class="on">DOGE cleanup: 3.26M</button>
+<button data-f="18900000" class="">OIG universe: 18.9M</button>
+<button data-f="20000000" class="">Musk claim: 20M</button>
+</div>
+<div class="controls">
+<div class="ctl"><label>Flag → paid conversion rate</label><output id="oConv"></output><input type="range" id="sConv" min="0" max="1000" value="500"></div>
+</div>
+<svg class="chart" id="chartGhost" viewBox="0 0 640 240" role="img" aria-label="Flagged records versus implied paid"></svg>
+<div class="readouts">
+<div class="ro"><div class="k">Implied actually paid</div><div class="v" id="gMean">–</div></div>
+<div class="ro"><div class="k">95% credible interval</div><div class="v" id="gCI" style="font-size:16px">–</div></div>
+<div class="ro"><div class="k">Share of flagged</div><div class="v" id="gShare">–</div></div>
+</div>
+</div>
+
+<h2>What the posteriors say</h2>
+<ul class="tight">
+<li>Even the <strong>alarmist</strong> prior — an order of magnitude above anything measured — puts fraudulent beneficiaries at ~685k [593k–782k]: under 1% of the rolls, ~$15B/year against ~$1.5T paid.</li>
+<li>P(fraudulent &gt; 1,000,000) is effectively <strong>zero under all three stances</strong>.</li>
+<li>The ghost check is the starkest result: <strong>millions of flagged records convert to thousands of payments</strong> — 3.26M flagged → ~7,600 paid; even the 20M claim → ~46,600.</li>
+<li>Remember the direction of the bias: stewardship rates measure <em>improper</em> payments (mostly errors), so these posteriors are <strong>upper bounds on fraud</strong>, not estimates of it.</li>
+</ul>
+
+<h2>Caveats</h2>
+<ul class="tight">
+<li><strong>Improper ≠ fraud.</strong> SSA's books measure payment errors, not criminal fraud. Every number above overstates true fraud to the extent errors dominate.</li>
+<li>The 44,000 figure comes via secondary reporting on the July 2023 OIG report; direct verification against the primary report is still pending.</li>
+<li>DOGE's 3.26M cleanup figure is via secondary reporting of a DOGE X announcement.</li>
+<li>Prior strength (20k pseudo-observations default) is a judgment call — that's what the slider is for.</li>
+<li><em>R</em> is treated as a known admin count; in reality it has its own (small) reporting uncertainty.</li>
+</ul>
+
+<h2>Sources</h2>
+<ul class="tight">
+<li>SSA Annual Statistical Supplement 2025, Table 5.A1 (OASDI beneficiaries &amp; average benefit, Dec 2024)</li>
+<li>SSA OIG, July 2023 — Numident records without death information (18.9M records; ~44k receiving payments, via secondary reporting)</li>
+<li>SSA Agency Financial Report FY2024, Other Reporting Requirements (stewardship improper-payment rates)</li>
+<li>SSA OIG 2021 audit — payments to deceased beneficiaries, 1998–2019 ($298M / ~24k cases)</li>
+<li>DOGE announcements, Mar 2025 — 3.26M age-120+ reclassifications (via secondary reporting)</li>
+<li>Model prototype: conjugate Beta-Binomial, no MCMC (<em>model.py</em> in draft folder)</li>
+</ul>
+
+<p><a href="/mini-projects/">← Back to Mini Project Space</a></p>
+</main>
+
+<footer class="site">
+© 2026 Kyle Webb · Built with GitHub Pages
+</footer>
+</div>
+<script>
+(function(){
+"use strict";
+var R = 68455973, BEN = 1834.43;
+var INK='#1c1917', MUTED='#78716c', FAINT='#e9e2d5', TEAL='#0e7c6b', TEALW='rgba(14,124,107,0.14)';
+var MONO="'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,monospace";
+
+/* ---------- math ---------- */
+function gammaln(x){
+  var c=[76.18009172947146,-86.50532032961677,24.01409824083091,-1.231739572450155,0.001208650973866179,-0.000005395239384953];
+  var y=x, tmp=x+5.5, s=1.000000000190015, j;
+  tmp -= (x+0.5)*Math.log(tmp);
+  for(j=0;j<6;j++){ y+=1; s+=c[j]/y; }
+  return -tmp+Math.log(2.5066282746310005*s/x);
+}
+function betaPdf(x,a,b){
+  if(x<=0||x>=1||a<=0||b<=0) return 0;
+  return Math.exp((a-1)*Math.log(x)+(b-1)*Math.log(1-x)-gammaln(a)-gammaln(b)+gammaln(a+b));
+}
+function betaGrid(a,b,xmax,n){
+  n=n||1400; var xs=[],pdf=[],cdf=[],tot=0,i,x,p;
+  for(i=0;i<=n;i++){ x=xmax*(i+0.5)/(n+1); p=betaPdf(x,a,b); xs.push(x); pdf.push(p); tot+=p; cdf.push(tot); }
+  for(i=0;i<=n;i++) cdf[i]/=tot;
+  return {xs:xs,pdf:pdf,cdf:cdf};
+}
+function quantile(g,q){
+  var c=g.cdf, lo=0, hi=c.length-1, m, i, t;
+  if(q<=c[0]) return g.xs[0];
+  while(lo<hi){ m=(lo+hi)>>1; if(c[m]<q) lo=m+1; else hi=m; }
+  i=Math.max(1,lo);
+  t=(q-c[i-1])/Math.max(1e-12,(c[i]-c[i-1]));
+  return g.xs[i-1]+t*(g.xs[i]-g.xs[i-1]);
+}
+function normPdf(x,mu,sd){ var z=(x-mu)/sd; return Math.exp(-0.5*z*z)/(sd*2.5066282746310005); }
+function pctile(sortedArr,q){ return sortedArr[Math.min(sortedArr.length-1, Math.floor(q*sortedArr.length))]; }
+
+/* ---------- fmt ---------- */
+function fmtInt(x){ return Math.round(x).toLocaleString('en-US'); }
+function fmtK(x){ if(x>=1e6) return (x/1e6).toFixed(1)+'M'; if(x>=1e3) return Math.round(x/1e3)+'k'; return ''+Math.round(x); }
+function fmtMoney(x){ return x>=1e9 ? '$'+(x/1e9).toFixed(1)+'B' : '$'+Math.round(x/1e6)+'M'; }
+function fmtPct(x){ return (x*100).toFixed(x<0.001?3:2)+'%'; }
+
+/* ---------- state ---------- */
+var state={ priorMean:0.0028, strength:20000, conv:44000/(44000+18856000), ghostF:3261057 };
+
+function bindLog(id,outId,min,max,fmt,get,set){
+  var el=document.getElementById(id), out=document.getElementById(outId);
+  function toPos(v){ return 1000*Math.log(v/min)/Math.log(max/min); }
+  function toVal(p){ return min*Math.pow(max/min,p/1000); }
+  function sync(){ out.textContent=fmt(toVal(+el.value)); }
+  el.addEventListener('input',function(){ set(toVal(+el.value)); sync(); renderAll(); });
+  sync();
+  return { set:function(v){ el.value=Math.round(toPos(v)); sync(); } };
+}
+
+/* ---------- svg scaffolding ---------- */
+function frame(W,H,ml,mr,mt,mb){
+  return {W:W,H:H,ml:ml,mr:mr,mt:mt,mb:mb, iw:W-ml-mr, ih:H-mt-mb,
+    base:H-mb,
+    tick:function(x,y,label,anchor){ return '<text x="'+x+'" y="'+y+'" text-anchor="'+(anchor||'middle')+'" font-family="'+MONO+'" font-size="10" fill="'+MUTED+'">'+label+'</text>'; },
+    hline:function(y){ return '<line x1="'+ml+'" y1="'+y+'" x2="'+(W-mr)+'" y2="'+y+'" stroke="'+FAINT+'" stroke-width="1"/>'; }
+  };
+}
+function pathFrom(pts){
+  return pts.map(function(p,i){ return (i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1); }).join(' ');
+}
+
+/* ---------- chart B: fraud posterior ---------- */
+function drawFraud(){
+  var m=state.priorMean, s=state.strength, a=m*s, b=(1-m)*s;
+  var mean=a/(a+b);
+  /* grid concentrated where the mass is: a [0,1] grid is far too coarse
+     for a distribution living near 0.003 (whole 95% interval fell in ~2 cells) */
+  var sdBeta=Math.sqrt(a*b/((a+b)*(a+b)*(a+b+1)));
+  var gxmax=Math.min(1, mean+12*sdBeta);
+  var g=betaGrid(a,b,gxmax,1600);
+  var q025=quantile(g,0.025), q975=quantile(g,0.975), q999=quantile(g,0.999);
+  var xmaxC=Math.max(q999*R*1.06, 50000);
+  var W=640,H=300,ml=58,mr=18,mt=16,mb=36, f=frame(W,H,ml,mr,mt,mb);
+  var X=function(c){ return ml+(c/xmaxC)*f.iw; };
+  // y-scale: clip at 99.5th pct of pdf to survive a<1 spikes
+  var sorted=g.pdf.slice().sort(function(p,q){return p-q;});
+  var ymax=pctile(sorted,0.995)*1.05 || 1;
+  var Y=function(p){ return f.base-(Math.min(p,ymax)/ymax)*f.ih; };
+  var pts=[],i,x,p;
+  for(i=0;i<g.xs.length;i++){ x=g.xs[i]; if(x*R>xmaxC) break; pts.push([X(x*R), Y(g.pdf[i])]); }
+  var d=pathFrom(pts);
+  // CrI band
+  var band=[],j;
+  for(j=0;j<g.xs.length;j++){ x=g.xs[j]; if(x<q025||x>q975) continue; band.push([X(x*R),Y(g.pdf[j])]); }
+  var bandD='';
+  if(band.length>1){
+    bandD='<path d="'+pathFrom(band)+'L'+X(q975*R).toFixed(1)+' '+f.base+'L'+X(q025*R).toFixed(1)+' '+f.base+'Z" fill="'+TEALW+'"/>';
+  }
+  var svg='<rect x="0" y="0" width="'+W+'" height="'+H+'" fill="none"/>';
+  svg+=f.hline(f.base);
+  var t,tx;
+  for(t=0;t<=4;t++){ tx=xmaxC*t/4; svg+='<line x1="'+X(tx)+'" y1="'+f.base+'" x2="'+X(tx)+'" y2="'+(f.base+5)+'" stroke="'+MUTED+'"/>'+f.tick(X(tx),f.base+20,fmtK(tx)); }
+  svg+=bandD;
+  svg+='<path d="'+d+'" fill="none" stroke="'+TEAL+'" stroke-width="2.5"/>';
+  svg+='<line x1="'+X(mean*R)+'" y1="'+mt+'" x2="'+X(mean*R)+'" y2="'+f.base+'" stroke="'+INK+'" stroke-width="1.5" stroke-dasharray="5 4"/>';
+  svg+=f.tick(X(mean*R),mt-4,'mean','middle').replace('fill="'+MUTED+'"','fill="'+INK+'"');
+  document.getElementById('chartFraud').innerHTML=svg;
+  // readouts
+  var sd=R*Math.sqrt(a*b/((a+b)*(a+b)*(a+b+1)));
+  var t1m=1e6/R, p1m, gi, glo, ghi, gmm, gfr, gc;
+  if(t1m<=g.xs[0]) p1m=1;
+  else if(t1m>=g.xs[g.xs.length-1]) p1m=0;
+  else {
+    glo=0; ghi=g.xs.length-1;
+    while(glo<ghi){ gmm=(glo+ghi)>>1; if(g.xs[gmm]<t1m) glo=gmm+1; else ghi=gmm; }
+    gi=Math.max(1,glo);
+    gfr=(t1m-g.xs[gi-1])/Math.max(1e-300,(g.xs[gi]-g.xs[gi-1]));
+    gc=g.cdf[gi-1]+gfr*(g.cdf[gi]-g.cdf[gi-1]);
+    p1m=1-gc;
+  }
+  document.getElementById('rMean').textContent=fmtInt(mean*R);
+  document.getElementById('rCI').textContent=fmtInt(q025*R)+' – '+fmtInt(q975*R);
+  document.getElementById('rDol').textContent=fmtMoney(mean*R*BEN*12);
+  document.getElementById('rP1M').textContent=p1m<0.0005?'<0.05%':(p1m*100).toFixed(1)+'%';
+  return {fraudMean:mean*R, fraudSd:sd};
+}
+
+/* ---------- chart A: program scale ---------- */
+function drawScale(fraud){
+  var W=640,H=300,ml=58,mr=18,mt=16,mb=36, f=frame(W,H,ml,mr,mt,mb);
+  var lo=66e6, hi=70e6;
+  var X=function(c){ return ml+((c-lo)/(hi-lo))*f.iw; };
+  var sdR=0.0005*R, muA=R-fraud.fraudMean, sdA=Math.sqrt(sdR*sdR+fraud.fraudSd*fraud.fraudSd);
+  var n=400, ptsR=[],ptsA=[],i,c,ymax=0;
+  for(i=0;i<=n;i++){ c=lo+(hi-lo)*i/n;
+    var pr=normPdf(c,R,sdR), pa=normPdf(c,muA,sdA);
+    if(pr>ymax)ymax=pr; if(pa>ymax)ymax=pa;
+    ptsR.push([X(c),pr]); ptsA.push([X(c),pa]);
+  }
+  var Y=function(p){ return f.base-(p/ymax)*f.ih; };
+  var dR=pathFrom(ptsR.map(function(p){return [p[0],Y(p[1])];}));
+  var dA=pathFrom(ptsA.map(function(p){return [p[0],Y(p[1])];}));
+  var svg=f.hline(f.base);
+  var t,tx;
+  for(t=0;t<=4;t++){ tx=lo+(hi-lo)*t/4; svg+='<line x1="'+X(tx)+'" y1="'+f.base+'" x2="'+X(tx)+'" y2="'+(f.base+5)+'" stroke="'+MUTED+'"/>'+f.tick(X(tx),f.base+20,fmtK(tx)); }
+  svg+='<path d="'+dR+'" fill="none" stroke="'+INK+'" stroke-width="2.5"/>';
+  svg+='<path d="'+dA+'" fill="none" stroke="'+MUTED+'" stroke-width="2" stroke-dasharray="6 4"/>';
+  document.getElementById('chartScale').innerHTML=svg;
+}
+
+/* ---------- chart C: ghost check ---------- */
+function drawGhost(){
+  var F=state.ghostF, N0=18944000, a=state.conv*N0, b=(1-state.conv)*N0;
+  var gmean=a/(a+b), gsd=Math.sqrt(a*b/((a+b)*(a+b)*(a+b+1)));
+  var g=betaGrid(a,b,Math.min(1,gmean+12*gsd),900);
+  var mean=gmean, lo=quantile(g,0.025), hi=quantile(g,0.975);
+  var imp=mean*F, impLo=lo*F, impHi=hi*F;
+  var W=640,H=240,ml=8,mr=8,mt=20,mb=44, f=frame(W,H,ml,mr,mt,mb);
+  var L0=3, L1=7.6;
+  var X=function(v){ return ml+((Math.log10(Math.max(v,1))-L0)/(L1-L0))*f.iw; };
+  var yF=86, yI=158, bh=30;
+  var svg='';
+  var e,ex;
+  for(e=3;e<=7;e++){ ex=X(Math.pow(10,e));
+    svg+='<line x1="'+ex+'" y1="'+mt+'" x2="'+ex+'" y2="'+(H-mb)+'" stroke="'+FAINT+'"/>'+f.tick(ex,H-mb+20,fmtK(Math.pow(10,e)));
+  }
+  // flagged bar
+  svg+='<rect x="'+X(1e3)+'" y="'+(yF-bh/2)+'" width="'+(X(F)-X(1e3))+'" height="'+bh+'" rx="4" fill="'+INK+'"/>';
+  svg+='<text x="'+(X(F)+8)+'" y="'+(yF+4)+'" font-family="'+MONO+'" font-size="11" fill="'+INK+'">'+fmtInt(F)+' flagged</text>';
+  // implied bar + whisker
+  svg+='<rect x="'+X(1e3)+'" y="'+(yI-bh/2)+'" width="'+Math.max(2,(X(imp)-X(1e3)))+'" height="'+bh+'" rx="4" fill="'+TEAL+'"/>';
+  svg+='<line x1="'+X(impLo)+'" y1="'+yI+'" x2="'+X(impHi)+'" y2="'+yI+'" stroke="'+INK+'" stroke-width="2"/>';
+  svg+='<line x1="'+X(impLo)+'" y1="'+(yI-8)+'" x2="'+X(impLo)+'" y2="'+(yI+8)+'" stroke="'+INK+'" stroke-width="2"/>';
+  svg+='<line x1="'+X(impHi)+'" y1="'+(yI-8)+'" x2="'+X(impHi)+'" y2="'+(yI+8)+'" stroke="'+INK+'" stroke-width="2"/>';
+  var lx=X(impHi)+8; if(lx>W-150) lx=X(impLo)-8-140;
+  svg+='<text x="'+lx+'" y="'+(yI+4)+'" font-family="'+MONO+'" font-size="11" fill="'+INK+'">'+fmtInt(imp)+' paid</text>';
+  svg+='<text x="'+ml+'" y="'+(yF-bh/2-8)+'" font-family="'+MONO+'" font-size="10" fill="'+MUTED+'">FLAGGED RECORDS</text>';
+  svg+='<text x="'+ml+'" y="'+(yI-bh/2-8)+'" font-family="'+MONO+'" font-size="10" fill="'+MUTED+'">IMPLIED ACTUALLY PAID (log scale)</text>';
+  document.getElementById('chartGhost').innerHTML=svg;
+  document.getElementById('gMean').textContent=fmtInt(imp);
+  document.getElementById('gCI').textContent=fmtInt(impLo)+' – '+fmtInt(impHi);
+  document.getElementById('gShare').textContent=fmtPct(mean)+' of flagged';
+}
+
+function renderAll(){
+  var fraud=drawFraud();
+  drawScale(fraud);
+  drawGhost();
+}
+
+/* ---------- wire controls ---------- */
+var meanBinder=bindLog('sMean','oMean',0.0001,0.02,function(v){return fmtPct(v);},function(){return state.priorMean;},function(v){state.priorMean=v;});
+var strBinder=bindLog('sStr','oStr',1000,100000,function(v){return fmtK(v);},function(){return state.strength;},function(v){state.strength=Math.round(v);});
+var convBinder=bindLog('sConv','oConv',0.0005,0.01,function(v){return fmtPct(v);},function(){return state.conv;},function(v){state.conv=v;});
+meanBinder.set(state.priorMean); strBinder.set(state.strength); convBinder.set(state.conv);
+
+function segWire(id, attr, apply){
+  var seg=document.getElementById(id), btns=seg.querySelectorAll('button');
+  btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      btns.forEach(function(b){b.classList.remove('on');});
+      btn.classList.add('on');
+      apply(parseFloat(btn.getAttribute(attr)));
+      renderAll();
+    });
+  });
+}
+segWire('stanceSeg','data-m',function(v){ state.priorMean=v; meanBinder.set(v); });
+segWire('ghostSeg','data-f',function(v){ state.ghostF=v; });
+
+renderAll();
+})();
+</script>
+</body>
+</html>
