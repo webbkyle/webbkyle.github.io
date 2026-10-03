@@ -248,12 +248,22 @@ ul.tight li::marker { color: var(--accent); }
 /* ---------- project entries ---------- */
 
 .tags {
+  margin: 10px 0 0;
+}
+
+.tag {
+  display: inline-block;
   font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
+  font-size: 10px;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--muted);
-  margin: 8px 0 0;
+  color: var(--ink);
+  background: #ffffff;
+  border: 1px solid var(--faint);
+  border-radius: 999px;
+  padding: 4px 12px;
+  margin: 0 6px 6px 0;
+  white-space: nowrap;
 }
 
 .card.sample { opacity: 0.5; }
