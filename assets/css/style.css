@@ -78,6 +78,7 @@ header.site .tagline {
 nav {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   border-top: 1px solid var(--faint);
   border-bottom: 1px solid var(--faint);
   margin-bottom: 52px;
