@@ -95,8 +95,8 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <div class="ctl"><label>Prior strength (pseudo-observations)</label><output id="oStr"></output><input type="range" id="sStr" min="0" max="1000" value="500"></div>
 </div>
 <svg class="chart" id="chartScale" viewBox="0 0 640 300" role="img" aria-label="Reported versus actual beneficiaries at program scale"></svg>
-<p class="chart-note"><strong>At program scale.</strong> Reported vs. actual beneficiaries — the two curves are indistinguishable because even the alarmist fraud estimate is a rounding error against 68.5M.</p>
-<div class="legend"><span><span class="sw" style="background:#0e7c6b"></span>Reported</span><span><span class="sw" style="background:#1c1917"></span>Actual (reported − fraud)</span></div>
+<p class="chart-note"><strong>At program scale.</strong> The solid line (reported beneficiaries) never moves — <em>R</em> is treated as a known admin count. The dashed line (actual = reported − fraud) shifts with your prior, but even at the alarmist setting it's a rounding error against 68.5M.</p>
+<div class="legend"><span><span class="sw" style="background:#1c1917"></span>Reported (fixed)</span><span><span class="sw" style="background:#78716c"></span>Actual = reported − fraud</span></div>
 <svg class="chart" id="chartFraud" viewBox="0 0 640 300" role="img" aria-label="Fraudulent beneficiary posterior, zoomed"></svg>
 <p class="chart-note"><strong>Zoomed in.</strong> Posterior over fraudulent beneficiaries. Shaded band = 95% credible interval; line = posterior mean.</p>
 <div class="readouts">
@@ -302,8 +302,8 @@ function drawScale(fraud){
   var svg=f.hline(f.base);
   var t,tx;
   for(t=0;t<=4;t++){ tx=lo+(hi-lo)*t/4; svg+='<line x1="'+X(tx)+'" y1="'+f.base+'" x2="'+X(tx)+'" y2="'+(f.base+5)+'" stroke="'+MUTED+'"/>'+f.tick(X(tx),f.base+20,fmtK(tx)); }
-  svg+='<path d="'+dR+'" fill="none" stroke="'+TEAL+'" stroke-width="2.5"/>';
-  svg+='<path d="'+dA+'" fill="none" stroke="'+INK+'" stroke-width="2" stroke-dasharray="6 4"/>';
+  svg+='<path d="'+dR+'" fill="none" stroke="'+INK+'" stroke-width="2.5"/>';
+  svg+='<path d="'+dA+'" fill="none" stroke="'+MUTED+'" stroke-width="2" stroke-dasharray="6 4"/>';
   document.getElementById('chartScale').innerHTML=svg;
 }
 
