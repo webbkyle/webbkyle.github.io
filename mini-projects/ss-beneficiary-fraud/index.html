@@ -50,7 +50,6 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 </header>
 
 <main>
-<p><span class="pill">Draft — not published</span></p>
 <h1>How many fraudulent Social Security beneficiaries are there?</h1>
 <p class="muted">A Bayesian estimate from DOGE's flagged records and SSA's own books.</p>
 <p class="tags"><span class="tag">Bayesian inference</span><span class="tag">Public data</span><span class="tag">Interactive</span></p>
@@ -65,7 +64,7 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <tr><td>OASDI beneficiaries, Dec 2024</td><td class="num">68,455,973</td><td>SSA Annual Statistical Supplement 2025, Table 5.A1</td></tr>
 <tr><td>Average monthly benefit, Dec 2024</td><td class="num">$1,834.43</td><td>Same table</td></tr>
 <tr><td>Numident records, born ≤1920, no death info</td><td class="num">18.9M</td><td>SSA OIG, July 2023</td></tr>
-<tr><td>Of those, receiving payments</td><td class="num">~44,000</td><td>SSA OIG, July 2023 (via secondary reporting; verifying against primary)</td></tr>
+<tr><td>Of those, receiving payments</td><td class="num">~44,000</td><td>SSA OIG, July 2023 (via secondary reporting; primary verification pending)</td></tr>
 <tr><td>DOGE reclassified age 120+</td><td class="num">3.26M records</td><td>DOGE announcement, Mar 2025 (via secondary reporting)</td></tr>
 <tr><td>OASI payments free of overpayment, FY2024</td><td class="num">99.91% ($1.62B improper)</td><td>SSA Agency Financial Report FY2024</td></tr>
 <tr><td>DI payments free of overpayment, FY2024</td><td class="num">98.72% ($2.34B improper)</td><td>Same</td></tr>
@@ -138,7 +137,7 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <h2>Caveats</h2>
 <ul class="tight">
 <li><strong>Improper ≠ fraud.</strong> SSA's books measure payment errors, not criminal fraud. Every number above overstates true fraud to the extent errors dominate.</li>
-<li>The 44,000 figure comes via secondary reporting on the July 2023 OIG report; verifying against the primary before this leaves draft.</li>
+<li>The 44,000 figure comes via secondary reporting on the July 2023 OIG report; direct verification against the primary report is still pending.</li>
 <li>DOGE's 3.26M cleanup figure is via secondary reporting of a DOGE X announcement.</li>
 <li>Prior strength (20k pseudo-observations default) is a judgment call — that's what the slider is for.</li>
 <li><em>R</em> is treated as a known admin count; in reality it has its own (small) reporting uncertainty.</li>
