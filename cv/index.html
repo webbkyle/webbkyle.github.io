@@ -25,7 +25,7 @@
 
 <main>
 <h1>Curriculum Vitae</h1>
-<p class="muted">Fuller record than the <a href="/resume/">resume</a> — includes earlier roles, service, and publications.</p>
+<p class="muted">The full record — every role, rotation, publication, and service detail. For highlights, see the <a href="/resume/">resume</a>.</p>
 <p><a href="mailto:webb.kyle@outlook.com">webb.kyle@outlook.com</a> · <a href="https://github.com/webbkyle">github.com/webbkyle</a></p>
 
 <h2>Education</h2>
@@ -42,27 +42,108 @@
 </ul>
 
 <h2>Professional Experience</h2>
-<p><strong>eSimplicity</strong> — Staff Data Scientist (Sept 2023 – Present); Senior Data Scientist (Apr 2022 – Aug 2023). Remote. CMS QDAS; AI Data Analyst Fellow, Rapid Innovation Center.</p>
-<p><strong>GovernmentCIO</strong> — Data Scientist (July 2021 – Apr 2022). Remote.</p>
-<p><strong>National Human Genome Research Institute (NHGRI)</strong> — Bioinformatics Scientist (Oct 2020 – July 2021). Bethesda, MD.</p>
+
+<div class="card">
+<div class="job-head"><strong>eSimplicity — Staff Data Scientist</strong><span class="job-date">Sept 2023 – Present · Remote</span></div>
+<p class="muted" style="margin-top:0">AI Data Analyst Fellow, Rapid Innovation Center · CMS QDAS (Quality Data and Analytics Services)</p>
 <ul class="tight">
-<li>Gathered and assessed electronic health record (EHR) data from millions of patients for a COVID-19 phenotyping study.</li>
-<li>Extracted, mapped, and aggregated data across two cloud-based enclaves for a participant comparison study.</li>
-<li>Completed data use requests and agreements for COVID-19 data access through the National COVID Cohort Collaborative (N3C).</li>
+<li>Develop data models supporting business growth initiatives.</li>
+<li>Authored a mock RFP proposal demonstrating proposed technical approaches.</li>
+<li>Piloted a cost-analysis application for Databricks resources and cost centers, powered by an AI agent with an MCP server that lets users ask live questions about their cost data.</li>
+<li>Designed and implemented data governance workflows enforcing strict role-based access controls (RBAC) for 2,000+ users in a Kinesis-driven data repository supporting portal organizational and user data.</li>
+<li>Integrated legacy metadata formats into a modern data catalog application built on a customized fork of DataHub.</li>
+<li>Established multiple Databricks Delta Shares, reducing data duplication costs for CMS while enabling governed, read-only sharing across Databricks workspaces for different organizations.</li>
+<li>Migrated all legacy EMR workloads to Databricks, implementing automated validation, testing, and monitoring — achieving an 82% reduction in median runtime and a 93% reduction in median cost.</li>
+<li>Led a team of six DevOps and data engineers delivering scheduled, validated data distributions across 20 CDR sources, processing terabytes of claims, provider, and beneficiary data with AWS MWAA, Terraform, and Databricks.</li>
+<li>Conducted 20+ technical interviews for data science and data engineering roles, evaluating coding proficiency and system design capabilities.</li>
 </ul>
-<p><strong>National Institute of Allergy and Infectious Diseases (NIAID)</strong> — Data Science Fellow (June 2018 – Sept 2020). Bethesda, MD.</p>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>eSimplicity — Senior Data Scientist</strong><span class="job-date">Apr 2022 – Aug 2023 · Remote</span></div>
+<p class="muted" style="margin-top:0">CMS QDAS (Quality Data and Analytics Services)</p>
 <ul class="tight">
-<li>Extracted and manipulated over 4 TB of CERNER health data.</li>
-<li>Executed parallelized high-performance computing (HPC) jobs for machine-learning classification of rare diseases.</li>
-<li>Extended the R package <em>ihazr</em> for semiparametric hazard regression estimation and visualization.</li>
-<li>Improved computational speed and network visualization for a publicly available genetic screening tool.</li>
-<li>Contributed machine-learning analyses to a proteomics study comparing diseased individuals and controls.</li>
-<li>Compared NLP models for Human Phenotype Ontology assignment across a corpus of 32,000 clinical notes.</li>
-<li>Applied dimensionality reduction to free-text clinical data to cluster patients with monogenic diseases.</li>
+<li>Provided technical support to CDR users on data quality, access control, and R/Python development within Databricks notebooks.</li>
+<li>Presented applied analytics and data science workflows in R on Databricks to 150+ CDR users at the CCSQ 2023 DataCamp event.</li>
+<li>Developed Bash and Python migration tooling to transition data and metadata from Hadoop to Amazon S3 and from the Hive Metastore to AWS Glue, including parallelized cross-account object migration with AWS EMR.</li>
+<li>Designed and executed a lineage-tracking pilot leveraging OpenLineage, dbt, and Marquez to evaluate metadata capture and visualization capabilities.</li>
 </ul>
-<p><strong>Technomics, Inc.</strong> — Analyst (Feb – Nov 2017). Arlington, VA.</p>
-<p><strong>Virginia Tech, Dept. of Statistics</strong> — Graduate Teaching Assistant (Aug 2015 – Dec 2016). Blacksburg, VA.</p>
-<p><strong>Eastman Chemical Company</strong> — Intern, Applied Statistics Group (May – Aug 2016). Kingsport, TN.</p>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>GovernmentCIO — Data Scientist</strong><span class="job-date">July 2021 – Apr 2022 · Remote</span></div>
+<ul class="tight">
+<li>Acted as the sole R and Python developer automating PowerPoint slides detailing VA IT infrastructure; reported major incident data and shared findings with Operations Triage Group (OTG) leadership; presented one week's report to 200+ participants including the Chief Information Officer of the VA.</li>
+<li>Provided querying, data cleaning, and analysis for over 30 unplanned and scheduled briefs on IT topics from invalid security certificates to telecommunication and network outages for the largest healthcare network in the United States — some with one-day turnarounds requiring immediate coordination and action.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>National Human Genome Research Institute (NHGRI) — Bioinformatics Scientist</strong><span class="job-date">Oct 2020 – July 2021 · Bethesda, MD</span></div>
+<ul class="tight">
+<li>Built the lab's online workspace in the National COVID Cohort Collaborative (N3C) data enclave and completed data use requests and agreements for COVID-19 EHR ETL processes; coached team members on the Apache Spark framework using PySpark and SparkR and the N3C platform.</li>
+<li>Gathered and assessed EHR data from millions of patients for a COVID-19 Phenotype-Wide Association Study (PheWAS).</li>
+<li>Pulled, mapped, and aggregated data from N3C and the All of Us (AoU) cloud-based enclaves for a participant comparison study; used stratified sampling to control for differences in COVID-19 effects by race, gender, age, and ethnicity, and performed a PheWAS comparison between N3C and AoU research participants.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>National Institute of Allergy and Infectious Diseases (NIAID) — Data Science Fellow</strong><span class="job-date">June 2018 – Sept 2020 · Bethesda, MD</span></div>
+<p class="muted" style="margin-top:0">Office of Data Science and Emerging Technologies</p>
+<ul class="tight">
+<li>Utilized ETL processes for over 4TB of Cerner health data; sent parallelized high-performance computing jobs for rare-disease classification machine-learning models to determine health effects deemed "important" in rare disease classification.</li>
+<li>Pushed commits improving computational speed and network visualization for SIGNAL, a publicly available genetic screening tool (R Shiny + JavaScript D3.js) — work planned to take six months, completed in four.</li>
+<li>After scrubbing personally identifiable information from a corpus of 32,000 clinical notes, trained and compared two NLP models for Human Phenotype Ontology (HPO) assignment; determined model performance and designed hierarchical renderings of results using t-SNE mappings on predictive output.</li>
+<li>Built upon the R package <em>ihazr</em> for hazard regression display and estimation using semiparametric methods.</li>
+<li>Assisted machine-learning analyses for a proteomics study comparing diseased individuals and controls.</li>
+<li>Provided dimensionality reduction analysis on free text to cluster patients with monogenic diseases.</li>
+<li>Updated issuances, reports, and presentations to keep managers current on data-science developments and public-health applications; developed software capabilities supporting the Office's mission to advise scientific staff across the institute.</li>
+</ul>
+<p><strong>Data science rotations</strong> <span class="muted">(five, across the institute)</span></p>
+<ul class="tight">
+<li><strong>Biostatistics Research Branch</strong> — integrated new technology into an open-source R Shiny survival-analysis platform; built an interactive, customized D3.js web application for hazard regression with coded examples; developed an R package with examples and directions; assisted a genome-wide association study checking time-point independence in a glucocorticoid study; ran principal component analysis to inform study assumptions.</li>
+<li><strong>Laboratory of Immune System Biology</strong> — assisted the bioinformatics team on a proteomics study of Idiopathic CD4 lymphocytopenia (15 controls, 35 patients), scoring protein relevance with machine learning; developed TRIAGE (Throughput Ranking by Iterative Analysis for Genomic Enrichment), pushing JavaScript and R updates through git; used Poisson likelihoods to distinguish hit genes across HIV studies.</li>
+<li><strong>Bioinformatics and Computational Biosciences Branch</strong> — co-developed the Genomic Research Integration System (GRIS) with government and industry partners; researched NLP methodologies for HPO assignment on 32,000 clinical notes; dimensionality reduction clustering of monogenic-disease patients; presented findings to scientific leaders and public-health officials.</li>
+<li><strong>Basic Immunology Branch</strong> — evaluated statistical and mathematical approaches for 28 Computational Modeling in Immunity (U01) grant reviews; migrated the award data repository from Excel to SharePoint; hosted an R Shiny application on NIH RStudio Connect for private visualization.</li>
+<li><strong>Epidemiology Unit</strong> — wrote bash scripts extracting a SQL database of 4TB+ of Cerner public-health data; developed new relational data sources combining patient tables; provided the epi team with data-cleansing workflows; sent parallel jobs to the NIAID cluster evaluating ML models for primary immunodeficiency diagnosis.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>Technomics, Inc. — Analyst</strong><span class="job-date">Feb – Nov 2017 · Arlington, VA</span></div>
+<ul class="tight">
+<li>Managed the Air Force Cost Analysis Agency contracts SQL database with over one million historical records.</li>
+<li>Implemented text-mining Python and R scripts on PDF files to import and write contract data.</li>
+<li>Collaborated with clients in person and by phone to improve data access and retrieval.</li>
+<li>Developed R Shiny apps to provide data visualization, validation, and downloads for clients.</li>
+<li>Provided automated, timely reports on cost and schedule overruns for Navy review of contract labor.</li>
+<li>Taught an R programming course to over 20 cost analysts.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>Virginia Tech, Dept. of Statistics — Graduate Teaching Assistant</strong><span class="job-date">Aug 2015 – Dec 2016 · Blacksburg, VA</span></div>
+<ul class="tight">
+<li>Served as a statistical consultant for interdisciplinary research projects; attended weekly consulting-group meetings discussing issues and solutions.</li>
+<li>Assisted professors grading homework and exams for undergraduate statistics courses; held review sessions for a probability course for engineers.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>Eastman Chemical Company — Intern, Applied Statistics Group</strong><span class="job-date">May – Aug 2016 · Kingsport, TN</span></div>
+<ul class="tight">
+<li>Analyzed multiple comparisons for polymer strength across testing orientations; implemented response surface designs to explain cigarette-plug yield.</li>
+<li>Collaborated with lab technicians, chemists, and statisticians across nine summer projects; presented findings to company leaders and Virginia Tech students.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>Wake Forest Dept. of Mathematics — Researcher</strong><span class="job-date">June 2012 – Aug 2014 · Winston-Salem, NC</span></div>
+<ul class="tight">
+<li>Co-authored <em>Symmetry in Domination for Hypergraphs with Choice</em> (Symmetry, 2017).</li>
+<li>Implemented the university's cluster and bash scripting to run R-coded jobs; presented research findings at URECA, JMM 2014, and CanaDAM 2015.</li>
+</ul>
+</div>
 
 <h2>Publications</h2>
 <ul class="tight">
@@ -72,10 +153,9 @@
 
 <h2>Service</h2>
 <ul class="tight">
-<li>Emergency Room Volunteer, MedStar Health — Washington, DC (2019)</li>
-<li>Orphanage Rebuild, Scripture Union — Kusi, Peru (2013)</li>
-<li>Home Rebuild, Habitat for Humanity — Tuscaloosa, AL (2012)</li>
-<li>Medical Volunteer, Mercer University — Vietnam (2010)</li>
+<li><strong>Emergency Room Volunteer, MedStar Health</strong> — Georgetown, DC (Aug 2019 – Feb 2020)<br><span class="muted">30+ hours assisting doctors, nurses, and medical staff on nightly rounds.</span></li>
+<li><strong>Reformed University Fellowship — Leader</strong> — Winston-Salem, NC (Aug 2012 – May 2015)<br><span class="muted">Built homes with Habitat for Humanity for tornado victims (Tuscaloosa, AL); volunteered with Scripture Union caring for orphans (Kusi, Peru).</span></li>
+<li><strong>Mercer University, Biomedical Department — Volunteer</strong> — Macon, GA (May – July 2010)<br><span class="muted">Built 50+ prosthetic legs in the biomedical lab; fit prosthetics and administered vitamin shots to Vietnamese amputees.</span></li>
 </ul>
 
 <h2>Technical Skills</h2>
