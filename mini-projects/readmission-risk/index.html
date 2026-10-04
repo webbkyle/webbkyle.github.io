@@ -46,14 +46,14 @@ pre.arch { font-family: var(--mono); font-size: 12px; line-height: 1.5; backgrou
 
 <main>
 <h1>30-day hospital readmission risk, built like a production ML system</h1>
-<p class="muted">Predicting which discharges come back within 30 days — with a FHIR-native pipeline, a deployed model, drift monitoring, and weekly retraining. All on synthetic data.</p>
+<p class="muted">Predicting which discharges come back within 30 days — with a <span class="gloss" tabindex="0" data-def="Fast Healthcare Interoperability Resources &#8212; the standard format for exchanging electronic health records.">FHIR</span>-native pipeline, a deployed model, drift monitoring, and weekly retraining. All on synthetic data.</p>
 <p class="tags"><span class="tag">ML systems</span><span class="tag">FHIR</span><span class="tag">MLOps</span><span class="tag">LightGBM</span></p>
 
 <div class="demo-cta">
 <a class="btn primary" href="https://huggingface.co/spaces/k-webb/readmission-risk">Try the live demo →</a>
 <a class="btn ghost" href="https://github.com/webbkyle/readmission-risk">GitHub repo</a>
 </div>
-<p class="muted" style="font-size:13.5px">The demo runs the model <strong>in your browser</strong> — pick a synthetic patient, see their risk score computed live. No data leaves your machine.</p>
+<p class="muted" style="font-size:13.5px">The demo runs the model <strong>in your browser</strong> — pick a synthetic discharge, see its risk score computed live. No data leaves your machine.</p>
 
 <div class="widget" id="statusWidget">
 <h3>Live model status</h3>
@@ -63,28 +63,28 @@ pre.arch { font-family: var(--mono); font-size: 12px; line-height: 1.5; backgrou
 </div>
 
 <h2>Problem</h2>
-<p>Hospitals want to know, at discharge, which patients are likely to bounce back within 30 days — it's a quality metric, a cost driver, and in the US a source of Medicare penalties. The modeling problem is well-trodden. The <em>systems</em> problem is not: most ML portfolios stop at a notebook with a cross-validated AUC. What does the whole thing look like — data ingestion, feature engineering, serving, monitoring, retraining — wired together and actually running?</p>
+<p>Hospitals want to know, at discharge, which patients are likely to bounce back within 30 days — it's a quality metric, a cost driver, and in the US a source of Medicare penalties. The modeling problem is well-trodden. The <em>systems</em> problem is not: most ML portfolios stop at a notebook with a cross-validated <span class="gloss" tabindex="0" data-def="Area under the ROC curve: the probability the model ranks a randomly chosen readmitted discharge above a non-readmitted one. 0.5 is chance, 1.0 is perfect.">AUC</span>. What does the whole thing look like — data ingestion, feature engineering, serving, monitoring, retraining — wired together and actually running?</p>
 <p>That's what this project builds. The model itself is deliberately not the point (more on why below). The system is.</p>
 
 <h2>Approach</h2>
-<p><strong>Data.</strong> Everything trains on <a href="https://github.com/synthetichealth/synthea">Synthea</a> synthetic patients — ~1,180 FHIR R4 bundles, each a full longitudinal history (encounters, conditions, observations, medications, procedures, claims). Synthetic by construction: no PHI, no data-use agreement, fully reproducible. The label is 30-day readmission after inpatient discharge: 2,108 discharges from 283 patients, 33.5% positive.</p>
-<p><strong>Features.</strong> 26 features engineered directly from FHIR resources with a single code path used in both training and serving (no train-serve skew): demographics, length of stay, utilization history (prior inpatient/ED/ambulatory counts, days since last discharge), chronic-condition flags, and the latest pre-discharge vitals and labs (BMI, blood pressure, HbA1c, glucose, creatinine, eGFR, sodium, potassium).</p>
-<p><strong>Model.</strong> LightGBM against a logistic-regression baseline, validated with patient-grouped splits — all of a patient's discharges land on one side of the split, so the model can't memorize frequent flyers. A 57-patient holdout is frozen for every future champion/challenger comparison.</p>
+<p><strong>Data.</strong> Everything trains on <a href="https://github.com/synthetichealth/synthea">Synthea</a> synthetic patients — ~1,180 FHIR R4 bundles, each a full longitudinal history (encounters, conditions, observations, medications, procedures, claims). Synthetic by construction: no <span class="gloss" tabindex="0" data-def="Protected health information &#8212; real patient data subject to privacy law.">PHI</span>, no data-use agreement, fully reproducible. The label is 30-day readmission after inpatient discharge: 2,108 discharges from 283 patients, 33.5% positive.</p>
+<p><strong>Features.</strong> 26 features engineered directly from FHIR resources with a single code path used in both training and serving (no train-serve skew): demographics, length of stay, utilization history (prior inpatient/ED/ambulatory counts, days since last discharge), chronic-condition flags, and the latest pre-discharge vitals and labs (BMI, blood pressure, <span class="gloss" tabindex="0" data-def="Glycated hemoglobin &#8212; reflects average blood sugar over roughly 3 months.">HbA1c</span>, glucose, creatinine, <span class="gloss" tabindex="0" data-def="Estimated glomerular filtration rate &#8212; a kidney-function estimate derived from creatinine.">eGFR</span>, sodium, potassium).</p>
+<p><strong>Model.</strong> <span class="gloss" tabindex="0" data-def="A gradient-boosted decision-trees library &#8212; a strong default for tabular data like this.">LightGBM</span> against a logistic-regression baseline, validated with patient-grouped splits — all of a patient's discharges land on one side of the split, so the model can't memorize frequent flyers. A 57-patient holdout is frozen for every future <span class="gloss" tabindex="0" data-def="The deployed model (champion) versus a newly trained candidate (challenger). The challenger only takes over if it beats the champion on a frozen holdout set.">champion/challenger</span> comparison.</p>
 <p><strong>The system around it:</strong></p>
 <pre class="arch">FHIR bundles → feature pipeline → LightGBM champion → FastAPI + Docker (production serving)
-                                                        ↘ static HF Space (in-browser ONNX demo)
+                                                        ↘ static HF Space (in-browser <span class="gloss" tabindex="0" data-def="Open Neural Network Exchange: a portable model format. Here it lets the trained model run entirely inside the visitor&#8217;s browser.">ONNX</span> demo)
 Weekly: fresh synthetic cohort → retrain challenger → promote only on frozen-holdout gate
-Weekly: drift check (PSI of served prediction distribution vs training baseline)</pre>
+Weekly: drift check (<span class="gloss" tabindex="0" data-def="Population Stability Index: measures how far a distribution (here, predicted risks) has drifted from its baseline.">PSI</span> of served prediction distribution vs training baseline)</pre>
 <p>The demo Space is a fun constraint: Hugging Face's free tier only allows static sites, so the champion is exported to ONNX and scored with ONNX Runtime Web directly in the visitor's browser. The FastAPI service and Dockerfile stay in the repo as the production serving design.</p>
 
 <h2>Results</h2>
 <table class="data">
-<tr><th></th><th>Holdout AUC</th><th>Avg precision</th></tr>
+<tr><th></th><th>Holdout AUC</th><th><span class="gloss" tabindex="0" data-def="Area under the precision&#8211;recall curve &#8212; summarizes ranking quality when positives are a minority.">Avg precision</span></th></tr>
 <tr><td>Logistic regression (baseline)</td><td class="num">0.90</td><td class="num">0.73</td></tr>
 <tr><td><strong>LightGBM (champion v2026-10)</strong></td><td class="num"><strong>0.93</strong></td><td class="num"><strong>0.80</strong></td></tr>
 </table>
 <p>Top features: days since last discharge, medication count, lifetime inpatient stays, eGFR, sodium — utilization history dominates, as you'd expect.</p>
-<p>The honest read on 0.93: it's Synthea's strong patient-level autocorrelation talking, not modeling genius. Synthetic patients are generated by disease modules with consistent behavior, so "frequent flyers keep flying" is nearly deterministic. <strong>This is a systems demo, not a clinical result, and the model is not validated for clinical use.</strong></p>
+<p>The honest read on 0.93: it's <span class="gloss" tabindex="0" data-def="Open-source generator of realistic but fully synthetic patient records. No real patient data involved.">Synthea</span>'s strong patient-level autocorrelation talking, not modeling genius. Synthetic patients are generated by disease modules with consistent behavior, so "frequent flyers keep flying" is nearly deterministic. <strong>This is a systems demo, not a clinical result, and the model is not validated for clinical use.</strong></p>
 <p>The more interesting result is the system working as designed. The first weekly run trained a challenger (AUC 0.917) that <em>failed</em> the promotion gate (needed ≥ 0.921) — so the champion stood, and the run was recorded. A retraining loop that says "no" is doing its job.</p>
 
 <h2>Takeaways</h2>
