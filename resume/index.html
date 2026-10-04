@@ -25,12 +25,12 @@
 
 <main>
 <h1>Resume</h1>
-<p class="muted">Highlights — the <a href="/cv/">CV</a> holds the full record, including earlier roles, rotations, service, and publications. Interactive side-project write-ups live in the <a href="/mini-projects/">Mini Project Space</a>.</p>
+<p class="muted">Highlights: the <a href="/cv/">CV</a> holds the full record, including earlier roles, rotations, service, and publications. Interactive side-project write-ups live in the <a href="/mini-projects/">Mini Project Space</a>.</p>
 <p><a class="btn" href="/resume/kyle-webb-resume.pdf">Download PDF</a></p>
 <p><a href="mailto:webb.kyle@outlook.com">webb.kyle@outlook.com</a> · <a href="https://github.com/webbkyle">github.com/webbkyle</a></p>
 
 <h2>Professional Summary</h2>
-<p>Data scientist and data engineer with 10+ years across scientific research, federal health programs, and industry. He builds both sides: the data platforms, pipelines, and governance that make data trustworthy — terabytes across 20 sources, 2,000+ governed users, 82% runtime and 93% cost cuts — and the machine learning and applied statistics that turn it into predictions and decisions, most recently an AI-agent cost-analysis app on Databricks (MCP server + Claude Sonnet 4.6) and a deployed readmission-risk ML system with drift monitoring and weekly retraining (see <a href="/mini-projects/">Mini Project Space</a>).</p>
+<p>Data scientist and data engineer with 10+ years across scientific research, federal health programs, and industry. He builds both sides: the data platforms, pipelines, and governance that make data trustworthy (terabytes across 20 sources, 2,000+ governed users, 82% runtime and 93% cost cuts) and the machine learning and applied statistics that turn it into predictions and decisions.</p>
 
 <h2>Experience</h2>
 
@@ -39,10 +39,11 @@
 <p class="muted" style="margin-top:0">Senior Data Scientist, Apr 2022 – Aug 2023 · AI Data Analyst Fellow, Rapid Innovation Center (internal applied-AI fellowship)</p>
 <ul class="tight">
 <li>As AI Data Analyst Fellow, built a Databricks Apps showcase of applied-AI use cases: a cost-analysis dash app over synthetic spend data (users and Unity Catalog resource groups) with live natural-language Q&A (Claude Sonnet 4.6) via an MCP server; evaluated with pytest and automated Playwright tests.</li>
-<li>Led six DevOps and data engineers shipping validated data distributions across 20 CDR sources — terabytes of claims, provider, and beneficiary data orchestrated with AWS MWAA, Terraform, and Databricks.</li>
-<li>Spearheaded migration of all legacy EMR workloads to Databricks, building automated validation, testing, and monitoring — slashing median runtime 82% and median cost 93%.</li>
+<li>Led six DevOps and data engineers shipping validated data distributions across 20 CDR sources: terabytes of claims, provider, and beneficiary data orchestrated with AWS MWAA, Terraform, and Databricks.</li>
+<li>Spearheaded migration of all legacy EMR workloads to Databricks, building automated validation, testing, and monitoring, slashing median runtime 82% and median cost 93%.</li>
 <li>Architected data-governance workflows enforcing strict role-based access controls for 2,000+ users across a Kinesis-driven data repository.</li>
-<li>Launched Databricks Delta Shares for governed cross-workspace sharing — eliminating duplicate data copies and their cost.</li>
+<li>Launched Databricks Delta Shares for governed cross-workspace sharing, eliminating duplicate data copies and their cost.</li>
+<li>Publishes applied side projects with interactive write-ups in a public <a href="/mini-projects/">Mini Project Space</a>.</li>
 </ul>
 </div>
 
@@ -50,7 +51,7 @@
 <div class="job-head"><strong>GovernmentCIO — Data Scientist</strong><span class="job-date">July 2021 – Apr 2022 · Remote</span></div>
 <ul class="tight">
 <li>Single-handedly automated VA IT infrastructure reporting in R/Python as the team's sole developer; briefed major incident data to Operations Triage Group leadership and presented to 200+ attendees including the VA Chief Information Officer.</li>
-<li>Delivered end-to-end analysis — querying, cleaning, modeling — for 30+ briefs spanning invalid security certificates to telecom outages for the largest U.S. healthcare network, several on one-day turnarounds.</li>
+<li>Delivered end-to-end analysis (querying, cleaning, modeling) for 30+ briefs spanning invalid security certificates to telecom outages for the largest U.S. healthcare network, several on one-day turnarounds.</li>
 </ul>
 </div>
 
@@ -67,17 +68,17 @@
 <div class="job-head"><strong>National Institute of Allergy and Infectious Diseases (NIAID) — Data Science Fellow</strong><span class="job-date">June 2018 – Sept 2020 · Bethesda, MD</span></div>
 <ul class="tight">
 <li>Engineered ETL pipelines and parallelized HPC jobs over 4TB+ of Cerner data to classify rare diseases with machine learning.</li>
-<li>Rebuilt performance and network visualization for SIGNAL, a public genetic screening tool (R Shiny + D3.js) — shipping in four months a roadmap scoped for six.</li>
+<li>Rebuilt performance and network visualization for SIGNAL, a public genetic screening tool (R Shiny + D3.js), shipping in four months a roadmap scoped for six.</li>
 <li>De-identified 32,000 clinical notes, then trained and benchmarked two NLP models for Human Phenotype Ontology assignment, visualizing results with hierarchical t-SNE renderings.</li>
 <li>Extended the open-source R package <em>ihazr</em>, adding semiparametric hazard regression estimation and visualization for survival analysis.</li>
-<li>Completed five cross-institute data-science rotations — biostatistics, immunology, bioinformatics, grants analytics, epidemiology (detailed on CV).</li>
+<li>Completed five cross-institute data-science rotations: biostatistics, immunology, bioinformatics, grants analytics, epidemiology (detailed on CV).</li>
 </ul>
 </div>
 
-<h2>Selected Side Projects</h2>
+<h2>Selected Projects</h2>
 <ul class="tight">
-<li><a href="/mini-projects/readmission-risk/">30-day hospital readmission risk</a> — production-style ML system: FHIR-native feature pipeline, deployed LightGBM model, drift monitoring, weekly champion/challenger retraining (<a href="https://huggingface.co/spaces/k-webb/readmission-risk">live demo</a>).</li>
-<li><a href="/mini-projects/ss-beneficiary-fraud/">How many fraudulent Social Security beneficiaries are there?</a> — Bayesian estimate from public SSA records, with interactive posteriors.</li>
+<li><a href="/mini-projects/readmission-risk/">30-day hospital readmission risk</a>: production-style ML system with FHIR-native feature pipeline, deployed LightGBM model, drift monitoring, and weekly retraining (<a href="https://huggingface.co/spaces/k-webb/readmission-risk">live demo</a>).</li>
+<li><a href="/mini-projects/ss-beneficiary-fraud/">How many fraudulent Social Security beneficiaries are there?</a>: Bayesian estimate from public SSA records, with interactive posteriors.</li>
 </ul>
 
 <h2>Education</h2>
