@@ -72,10 +72,10 @@ pre.arch { font-family: var(--mono); font-size: 12px; line-height: 1.5; backgrou
 <p><strong>Model.</strong> <span class="gloss" tabindex="0" data-def="A gradient-boosted decision-trees library &#8212; a strong default for tabular data like this.">LightGBM</span> against a logistic-regression baseline, validated with patient-grouped splits — all of a patient's discharges land on one side of the split, so the model can't memorize frequent flyers. A 57-patient holdout is frozen for every future <span class="gloss" tabindex="0" data-def="The deployed model (champion) versus a newly trained candidate (challenger). The challenger only takes over if it beats the champion on a frozen holdout set.">champion/challenger</span> comparison.</p>
 <p><strong>The system around it:</strong></p>
 <pre class="arch">FHIR bundles → feature pipeline → LightGBM champion → FastAPI + Docker (production serving)
-                                                        ↘ static HF Space (in-browser <span class="gloss" tabindex="0" data-def="Open Neural Network Exchange: a portable model format. Here it lets the trained model run entirely inside the visitor&#8217;s browser.">ONNX</span> demo)
+                                                        ↘ static HF Space (in-browser ONNX demo)
 Weekly: fresh synthetic cohort → retrain challenger → promote only on frozen-holdout gate
-Weekly: drift check (<span class="gloss" tabindex="0" data-def="Population Stability Index: measures how far a distribution (here, predicted risks) has drifted from its baseline.">PSI</span> of served prediction distribution vs training baseline)</pre>
-<p>The demo Space is a fun constraint: Hugging Face's free tier only allows static sites, so the champion is exported to ONNX and scored with ONNX Runtime Web directly in the visitor's browser. The FastAPI service and Dockerfile stay in the repo as the production serving design.</p>
+Weekly: drift check (PSI of served prediction distribution vs training baseline)</pre>
+<p>The demo Space is a fun constraint: Hugging Face's free tier only allows static sites, so the champion is exported to <span class="gloss" tabindex="0" data-def="Open Neural Network Exchange: a portable model format. Here it lets the trained model run entirely inside the visitor&#8217;s browser.">ONNX</span> and scored with ONNX Runtime Web directly in the visitor's browser. The FastAPI service and Dockerfile stay in the repo as the production serving design.</p>
 
 <h2>Results</h2>
 <table class="data">
