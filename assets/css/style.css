@@ -307,3 +307,44 @@ footer.site a { color: var(--muted); }
   main h2 { margin-top: 44px; }
   .job-date { white-space: normal; }
 }
+
+/* ---------- glossary tooltips (site-wide) ----------
+   Usage: <span class="gloss" data-def="Plain-language definition.">AUC</span>
+   Shows the definition on hover/focus. Add tabindex="0" for keyboard access. */
+.gloss {
+  border-bottom: 1px dotted var(--muted);
+  cursor: help;
+  position: relative;
+  white-space: nowrap;
+}
+.gloss::after {
+  content: attr(data-def);
+  position: absolute;
+  bottom: 135%;
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  width: max-content;
+  max-width: 260px;
+  white-space: normal;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--sans);
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  box-shadow: 0 4px 14px rgba(28, 25, 23, 0.25);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 50;
+}
+.gloss:hover::after,
+.gloss:focus::after,
+.gloss:focus-visible::after {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}

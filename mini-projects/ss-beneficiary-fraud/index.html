@@ -55,24 +55,24 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <p class="tags"><span class="tag">Bayesian inference</span><span class="tag">Public data</span><span class="tag">Interactive</span></p>
 
 <h2>The claim</h2>
-<p>In early 2025, Elon Musk and the Department of Government Efficiency (DOGE) claimed that millions of dead people were marked as alive in Social Security's database — "tens of millions," Musk posted, "definitely dead" yet listed as alive — and announced that ~3.26 million numberholders aged 120+ had been reclassified as deceased in a records cleanup.</p>
+<p>In early 2025, Elon Musk and the Department of Government Efficiency (DOGE) claimed that millions of dead people were marked as alive in Social Security's database — "tens of millions," Musk posted, "definitely dead" yet listed as alive — and <a href="https://www.cryptopolitan.com/doge-delete-3-2m-ghosts-from-social-security/">announced</a> that ~3.26 million numberholders aged 120+ had been reclassified as deceased in a records cleanup.</p>
 <p>The question everyone argued past each other on: <strong>flagged records are not payments.</strong> How many beneficiaries are actually fraudulent — actually receiving money they shouldn't get?</p>
 
 <h2>The data</h2>
 <table class="data">
 <tr><th>Figure</th><th>Value</th><th>Source</th></tr>
-<tr><td>OASDI beneficiaries, Dec 2024</td><td class="num">68,455,973</td><td>SSA Annual Statistical Supplement 2025, Table 5.A1</td></tr>
+<tr><td><span class="gloss" tabindex="0" data-def="Old-Age, Survivors, and Disability Insurance &#8212; the Social Security program paying monthly benefits to retired and disabled workers and their survivors.">OASDI</span> beneficiaries, Dec 2024</td><td class="num">68,455,973</td><td>SSA Annual Statistical Supplement 2025, Table 5.A1</td></tr>
 <tr><td>Average monthly benefit, Dec 2024</td><td class="num">$1,834.43</td><td>Same table</td></tr>
-<tr><td>Numident records, born ≤1920, no death info</td><td class="num">18.9M</td><td>SSA OIG, July 2023</td></tr>
+<tr><td>Numident records, born ≤1920, no death info</td><td class="num">18.9M</td><td>SSA <span class="gloss" tabindex="0" data-def="Office of the Inspector General &#8212; the independent watchdog that audits federal agency programs.">OIG</span>, July 2023</td></tr>
 <tr><td>Of those, receiving payments</td><td class="num">~44,000</td><td>SSA OIG, July 2023 (via secondary reporting; primary verification pending)</td></tr>
 <tr><td>DOGE reclassified age 120+</td><td class="num">3.26M records</td><td>DOGE announcement, Mar 2025 (via secondary reporting)</td></tr>
-<tr><td>OASI payments free of overpayment, FY2024</td><td class="num">99.91% ($1.62B improper)</td><td>SSA Agency Financial Report FY2024</td></tr>
-<tr><td>DI payments free of overpayment, FY2024</td><td class="num">98.72% ($2.34B improper)</td><td>Same</td></tr>
+<tr><td><span class="gloss" tabindex="0" data-def="Old-Age and Survivors Insurance &#8212; the retirement and survivors portion of Social Security (excludes disability).">OASI</span> payments free of overpayment, FY2024</td><td class="num">99.91% ($1.62B improper)</td><td>SSA Agency Financial Report FY2024</td></tr>
+<tr><td><span class="gloss" tabindex="0" data-def="Disability Insurance &#8212; the Social Security disability program.">DI</span> payments free of overpayment, FY2024</td><td class="num">98.72% ($2.34B improper)</td><td>Same</td></tr>
 <tr><td>OIG 2021: paid to deceased, 1998–2019</td><td class="num">$298M / ~24k cases</td><td>SSA OIG 2021 (procedural error, not fraud)</td></tr>
 </table>
 
 <h2>The model</h2>
-<p>Let <em>θ</em> be the probability that a reported beneficiary's payments are fraudulent or improper. Prior <em>θ ~ Beta(a, b)</em>, in three stances:</p>
+<p>Let <em>θ</em> be the probability that a reported beneficiary's payments are fraudulent or improper. Prior <em>θ ~ <span class="gloss" tabindex="0" data-def="A probability distribution over [0, 1] &#8212; the natural way to express uncertainty about a rate. Beta(a, b) can be read as &#8220;a&#8722;1 successes and b&#8722;1 failures seen so far.&#8221;">Beta</span>(a, b)</em>, in three stances:</p>
 <ul class="tight">
 <li><strong>Skeptical</strong> (0.02%) — true fraud sits well below measured improper-payment rates, which are mostly errors.</li>
 <li><strong>Neutral</strong> (0.28%) — the blended OASDI stewardship improper-payment rate for FY2024, in dollar terms.</li>
@@ -97,7 +97,7 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <p class="chart-note"><strong>At program scale.</strong> The solid line (reported beneficiaries) never moves — <em>R</em> is treated as a known admin count. The dashed line (actual = reported − fraud) shifts with your prior, but even at the alarmist setting it's a rounding error against 68.5M.</p>
 <div class="legend"><span><span class="sw" style="background:#1c1917"></span>Reported (fixed)</span><span><span class="sw" style="background:#78716c"></span>Actual = reported − fraud</span></div>
 <svg class="chart" id="chartFraud" viewBox="0 0 640 300" role="img" aria-label="Fraudulent beneficiary posterior, zoomed"></svg>
-<p class="chart-note"><strong>Zoomed in.</strong> Posterior over fraudulent beneficiaries. Shaded band = 95% credible interval; line = posterior mean.</p>
+<p class="chart-note"><strong>Zoomed in.</strong> Posterior over fraudulent beneficiaries. Shaded band = 95% <span class="gloss" tabindex="0" data-def="The Bayesian counterpart of a confidence interval: a 95% credible interval contains the true value with 95% posterior probability.">credible interval</span>; line = posterior mean.</p>
 <div class="readouts">
 <div class="ro"><div class="k">Fraudulent / improper (mean)</div><div class="v" id="rMean">–</div></div>
 <div class="ro"><div class="k">95% credible interval</div><div class="v" id="rCI" style="font-size:16px">–</div></div>
@@ -138,7 +138,7 @@ table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: no
 <ul class="tight">
 <li><strong>Improper ≠ fraud.</strong> SSA's books measure payment errors, not criminal fraud. Every number above overstates true fraud to the extent errors dominate.</li>
 <li>The 44,000 figure comes via secondary reporting on the July 2023 OIG report; direct verification against the primary report is still pending.</li>
-<li>DOGE's 3.26M cleanup figure is via secondary reporting of a DOGE X announcement.</li>
+<li>DOGE&#8217;s 3.26M cleanup figure is via <a href="https://www.cryptopolitan.com/doge-delete-3-2m-ghosts-from-social-security/">secondary reporting</a> of a DOGE X announcement.</li>
 <li>Prior strength (20k pseudo-observations default) is a judgment call — that's what the slider is for.</li>
 <li><em>R</em> is treated as a known admin count; in reality it has its own (small) reporting uncertainty.</li>
 </ul>

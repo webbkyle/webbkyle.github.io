@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>30-day hospital readmission risk, built like a production ML system — Kyle Webb</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/style.css">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<style>
+.widget { border: 1px solid var(--faint); border-radius: 12px; padding: 22px 24px; margin: 26px 0; background: #ffffff; }
+.widget h3 { font-family: var(--serif); font-size: 19px; margin: 0 0 4px; }
+.readouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px; margin-top: 18px; }
+.ro { border-top: 1px solid var(--faint); padding-top: 8px; }
+.ro .k { font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 2px; }
+.ro .v { font-family: var(--serif); font-size: 21px; font-weight: 600; letter-spacing: -0.01em; }
+.ro .s { font-size: 12px; color: var(--muted); }
+table.data { width: 100%; border-collapse: collapse; font-size: 14.5px; margin: 14px 0; }
+table.data th { font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: left; padding: 8px 10px 8px 0; border-bottom: 1px solid var(--faint); }
+table.data td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--faint); vertical-align: top; }
+table.data td.num { font-family: var(--mono); font-size: 12.5px; white-space: nowrap; }
+.demo-cta { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0 4px; }
+.btn { display: inline-block; padding: 10px 22px; border-radius: 999px; font-weight: 600; font-size: 15px; text-decoration: none; }
+.btn.primary { background: var(--ink); color: var(--paper); }
+.btn.ghost { border: 1px solid var(--faint); color: var(--ink); }
+.hist { font-size: 13.5px; color: var(--muted); margin: 12px 0 0; }
+.hist li { margin-bottom: 4px; }
+code.inline { font-family: var(--mono); font-size: 13px; background: #f4f1ea; padding: 1px 6px; border-radius: 4px; }
+pre.arch { font-family: var(--mono); font-size: 12px; line-height: 1.5; background: #faf8f3; border: 1px solid var(--faint); border-radius: 8px; padding: 14px 16px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="site">
+<p class="name">Kyle Webb</p>
+<p class="tagline">Staff Data Scientist — statistics, data engineering, and applied AI</p>
+<nav>
+<a href="/">Bio</a>
+<a href="/resume/">Resume</a>
+<a href="/cv/">CV</a>
+<a href="/mini-projects/" class="active">Mini Project Space</a>
+</nav>
+</header>
+
+<main>
+<h1>30-day hospital readmission risk, built like a production ML system</h1>
+<p class="muted">Predicting which discharges come back within 30 days — with a <span class="gloss" tabindex="0" data-def="Fast Healthcare Interoperability Resources &#8212; the standard format for exchanging electronic health records.">FHIR</span>-native pipeline, a deployed model, drift monitoring, and weekly retraining. All on synthetic data.</p>
+<p class="tags"><span class="tag">ML systems</span><span class="tag">FHIR</span><span class="tag">MLOps</span><span class="tag">LightGBM</span></p>
+
+<div class="demo-cta">
+<a class="btn primary" href="https://huggingface.co/spaces/k-webb/readmission-risk">Try the live demo →</a>
+<a class="btn ghost" href="https://github.com/webbkyle/readmission-risk">GitHub repo</a>
+</div>
+<p class="muted" style="font-size:13.5px">The demo runs the model <strong>in your browser</strong> — pick a synthetic discharge, see its risk score computed live. No data leaves your machine.</p>
+
+<div class="widget" id="statusWidget">
+<h3>Live model status</h3>
+<p class="chart-note" style="margin-top:0">This panel reads the project's <code class="inline">metrics.json</code> on every load — it always reflects the current champion, no manual updates.</p>
+<div class="readouts" id="statusReadouts"><div class="ro"><div class="k">Loading…</div></div></div>
+<ul class="hist" id="statusHist"></ul>
+</div>
+
+<h2>Problem</h2>
+<p>Hospitals want to know, at discharge, which patients are likely to bounce back within 30 days — it's a quality metric, a cost driver, and in the US a source of Medicare penalties. The modeling problem is well-trodden. The <em>systems</em> problem is not: most ML portfolios stop at a notebook with a cross-validated <span class="gloss" tabindex="0" data-def="Area under the ROC curve: the probability the model ranks a randomly chosen readmitted discharge above a non-readmitted one. 0.5 is chance, 1.0 is perfect.">AUC</span>. What does the whole thing look like — data ingestion, feature engineering, serving, monitoring, retraining — wired together and actually running?</p>
+<p>That's what this project builds. The model itself is deliberately not the point (more on why below). The system is.</p>
+
+<h2>Approach</h2>
+<p><strong>Data.</strong> Everything trains on <a href="https://github.com/synthetichealth/synthea">Synthea</a> synthetic patients — ~1,180 FHIR R4 bundles, each a full longitudinal history (encounters, conditions, observations, medications, procedures, claims). Synthetic by construction: no <span class="gloss" tabindex="0" data-def="Protected health information &#8212; real patient data subject to privacy law.">PHI</span>, no data-use agreement, fully reproducible. The label is 30-day readmission after inpatient discharge — roughly a quarter to a third of discharges are positive, and the cohort grows every week as new synthetic arrivals land (current counts are in the live status panel above).</p>
+<p>A word on FHIR, since the whole pipeline is built on it. A FHIR record is a JSON bundle of standardized <em>resources</em> — Patient, Encounter, Condition, Observation, MedicationRequest — each carrying clinical codes (SNOMED CT, LOINC, RxNorm) and timestamps. Compare that to the legacy world: HL7v2 pipe-delimited messages with site-specific quirks, C-CDA XML documents, or bespoke CSV extracts that silently drift. FHIR's payoff is a consistent schema — "systolic blood pressure" is the same LOINC code everywhere — which is what makes the "one feature code path for training and serving" claim real instead of aspirational. The pipeline parses standard resources, not custom extracts, so the demo's browser scoring and the training features can't drift apart.</p>
+<p><strong>Features.</strong> 26 features engineered directly from FHIR resources with a single code path used in both training and serving (no train-serve skew): demographics, length of stay, utilization history (prior inpatient/ED/ambulatory counts, days since last discharge), chronic-condition flags, and the latest pre-discharge vitals and labs (BMI, blood pressure, <span class="gloss" tabindex="0" data-def="Glycated hemoglobin &#8212; reflects average blood sugar over roughly 3 months.">HbA1c</span>, glucose, creatinine, <span class="gloss" tabindex="0" data-def="Estimated glomerular filtration rate &#8212; a kidney-function estimate derived from creatinine.">eGFR</span>, sodium, potassium).</p>
+<p><strong>Model.</strong> <span class="gloss" tabindex="0" data-def="A gradient-boosted decision-trees library &#8212; a strong default for tabular data like this.">LightGBM</span> against a logistic-regression baseline, validated with patient-grouped splits — all of a patient's discharges land on one side of the split, so the model can't memorize frequent flyers. A 57-patient holdout is frozen for every future <span class="gloss" tabindex="0" data-def="The deployed model (champion) versus a newly trained candidate (challenger). The challenger only takes over if it beats the champion on a frozen holdout set.">champion/challenger</span> comparison.</p>
+<p><strong>The system around it:</strong></p>
+<pre class="arch">FHIR bundles → feature pipeline → LightGBM champion → FastAPI + Docker (production serving)
+                                                        ↘ static HF Space (in-browser ONNX demo)
+Weekly: fresh synthetic cohort → retrain challenger → promote only on frozen-holdout gate
+Weekly: drift check (PSI of served prediction distribution vs training baseline)</pre>
+<p>The demo Space is a fun constraint: Hugging Face's free tier only allows static sites, so the champion is exported to <span class="gloss" tabindex="0" data-def="Open Neural Network Exchange: a portable model format. Here it lets the trained model run entirely inside the visitor&#8217;s browser.">ONNX</span> and scored with ONNX Runtime Web directly in the visitor's browser. The FastAPI service and Dockerfile stay in the repo as the production serving design.</p>
+
+<h2>Results</h2>
+<table class="data">
+<tr><th></th><th>Holdout AUC</th><th><span class="gloss" tabindex="0" data-def="Area under the precision&#8211;recall curve &#8212; summarizes ranking quality when positives are a minority.">Avg precision</span></th></tr>
+<tr><td>Logistic regression (baseline)</td><td class="num">0.90</td><td class="num">0.73</td></tr>
+<tr><td><strong>LightGBM (champion v2026-10-04)</strong></td><td class="num"><strong>0.93</strong></td><td class="num"><strong>0.81</strong></td></tr>
+</table>
+<p>Top features: days since last discharge, medication count, lifetime inpatient stays, eGFR, sodium — utilization history dominates, as you'd expect.</p>
+<p>The honest read on 0.93: it's <span class="gloss" tabindex="0" data-def="Open-source generator of realistic but fully synthetic patient records. No real patient data involved.">Synthea</span>'s strong patient-level autocorrelation talking, not modeling genius. Synthetic patients are generated by disease modules with consistent behavior, so "frequent flyers keep flying" is nearly deterministic. <strong>This is a systems demo, not a clinical result, and the model is not validated for clinical use.</strong></p>
+<p>The more interesting result is the system working as designed. The first weekly challenger (AUC 0.917) <em>failed</em> the promotion gate — so the champion stood, and the run was recorded. The next run's challenger cleared it (0.9341) and was promoted. A retraining loop that says "no" when it should is doing its job; one that says "yes" with receipts is the point.</p>
+
+<h2>Takeaways</h2>
+<ul class="tight">
+<li><strong>The system around the model is the real engineering.</strong> Frozen holdouts, identical feature code in training and serving, promotion gates — none of it fits in a notebook screenshot, and all of it is what separates a demo from something you'd actually trust in production.</li>
+<li><strong>Build the check that catches your own bugs.</strong> The ONNX export has a parity check against the native model. It caught a real scoring bug: I'd median-imputed missing values for the browser demo, but the champion was trained with LightGBM's native NaN handling — one patient scored 30.5% imputed vs 0.2% from the actual model. The check existed to catch conversion issues; it caught a conceptual one instead.</li>
+<li><strong>Synthetic data unlocks the whole loop.</strong> No PHI meant I could build ingestion, serving, monitoring, and retraining end-to-end and run it on a schedule — the parts that are usually hand-waved in portfolio projects.</li>
+<li><strong>Constraints produce design.</strong> "Static hosting only" led to in-browser inference, which turned out to be a better demo than an API: visitors interact with the model instead of reading about it, and no patient data — even synthetic — ever leaves their machine.</li>
+</ul>
+
+<h2>Caveats</h2>
+<ul class="tight">
+<li>All patients are synthetic (Synthea). No real clinical data, no clinical validity — do not use for medical decisions.</li>
+<li>Readmission is defined as any inpatient return within 30 days; transfers and planned returns aren't separately excluded.</li>
+<li>The weekly "new data" is freshly generated synthetic cohorts, simulating arrivals — a stand-in for the real workflow where outcomes join prediction logs after 30 days.</li>
+</ul>
+
+<p><a href="/mini-projects/">← Back to Mini Project Space</a></p>
+</main>
+
+<footer class="site">
+© 2026 Kyle Webb · Built with GitHub Pages
+</footer>
+</div>
+<script>
+(function(){
+"use strict";
+var URL = 'https://raw.githubusercontent.com/webbkyle/readmission-risk/main/data/metrics.json';
+function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+fetch(URL).then(function(r){ if(!r.ok) throw new Error('http '+r.status); return r.json(); })
+.then(function(s){
+  var d = s.drift || {};
+  var rows = [
+    ['Champion', esc(s.champion_version), ''],
+    ['Training data', s.n_train_rows + ' discharges', s.n_train_patients + ' patients'],
+    ['Holdout AUC', s.holdout_auc, 'frozen 57-patient holdout'],
+    ['Last run', esc(s.last_run), esc(s.last_outcome)],
+  ];
+  if (d.max_psi != null) rows.push(['Drift PSI', d.max_psi, esc(d.status)]);
+  document.getElementById('statusReadouts').innerHTML = rows.map(function(r){
+    return '<div class="ro"><div class="k">'+r[0]+'</div><div class="v">'+r[1]+'</div>'+
+           (r[2] ? '<div class="s">'+r[2]+'</div>' : '') + '</div>';
+  }).join('');
+  var hist = (s.history || []).slice(-5).reverse();
+  document.getElementById('statusHist').innerHTML = hist.map(function(h){
+    return '<li>'+esc(h.date)+' — '+esc(h.event)+(h.version ? ' ('+esc(h.version)+', AUC '+h.holdout_auc+')' : '')+'</li>';
+  }).join('');
+}).catch(function(e){
+  document.getElementById('statusReadouts').innerHTML =
+    '<div class="ro"><div class="k">Status unavailable</div><div class="v" style="font-size:15px">Could not reach the metrics feed — see the <a href="https://github.com/webbkyle/readmission-risk">repo</a>.</div></div>';
+});
+})();
+</script>
+</body>
+</html>
