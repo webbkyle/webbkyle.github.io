@@ -14,7 +14,7 @@
 <div class="wrap">
 <header class="site">
 <p class="name">Kyle Webb</p>
-<p class="tagline">Staff Data Scientist — statistics, data engineering, and applied AI</p>
+<p class="tagline">Staff Data Scientist · 10+ years · statistics, data engineering, and applied AI</p>
 <nav>
 <a href="/">Bio</a>
 <a href="/resume/" class="active">Resume</a>
@@ -29,56 +29,66 @@
 <p><a class="btn" href="/resume/kyle-webb-resume.pdf">Download PDF</a></p>
 <p><a href="mailto:webb.kyle@outlook.com">webb.kyle@outlook.com</a> · <a href="https://github.com/webbkyle">github.com/webbkyle</a></p>
 
-<h2>Professional Summary</h2>
-<p>Data scientist and data engineer with 10+ years across scientific research, federal health programs, and industry. He builds both sides: the data platforms, pipelines, and governance that make data trustworthy (terabytes across 20 sources, 2,000+ governed users, 82% runtime and 93% cost cuts) and the machine learning and applied statistics that turn it into predictions and decisions.</p>
+<h2>Impact Highlights</h2>
+<ul class="tight">
+<li>Slashed median EMR workload runtime <strong>82%</strong> and cost <strong>93%</strong> by migrating legacy workloads to Databricks with automated validation, testing, and monitoring.</li>
+<li>Delivered validated data distributions across <strong>20 CDR sources</strong> (terabytes of claims, provider, and beneficiary data) with a six-engineer DevOps/data team.</li>
+<li>Architected data governance with strict role-based access for <strong>2,000+ users</strong> across a Kinesis-driven repository, and launched Delta Shares to end duplicate data copies.</li>
+<li>Built an applied-AI showcase: Databricks Apps cost-analysis dash with live natural-language Q&amp;A (<strong>Claude Sonnet 4.6</strong>) via MCP server, pytest + Playwright tested.</li>
+</ul>
 
 <h2>Experience</h2>
+<p class="muted">For roles before 2018, see the <a href="/cv/">full CV</a>.</p>
 
 <div class="card">
 <div class="job-head"><strong>eSimplicity — Staff Data Scientist</strong><span class="job-date">Sept 2023 – Present · Remote</span></div>
-<p class="muted" style="margin-top:0">Senior Data Scientist, Apr 2022 – Aug 2023 · AI Data Analyst Fellow, Rapid Innovation Center (internal applied-AI fellowship)</p>
 <ul class="tight">
-<li>As AI Data Analyst Fellow, built a Databricks Apps showcase of applied-AI use cases: a cost-analysis dash app over synthetic spend data (users and Unity Catalog resource groups) with live natural-language Q&A (Claude Sonnet 4.6) via an MCP server; evaluated with pytest and automated Playwright tests.</li>
-<li>Led six DevOps and data engineers shipping validated data distributions across 20 CDR sources: terabytes of claims, provider, and beneficiary data orchestrated with AWS MWAA, Terraform, and Databricks.</li>
-<li>Spearheaded migration of all legacy EMR workloads to Databricks, building automated validation, testing, and monitoring, slashing median runtime 82% and median cost 93%.</li>
-<li>Architected data-governance workflows enforcing strict role-based access controls for 2,000+ users across a Kinesis-driven data repository.</li>
-<li>Launched Databricks Delta Shares for governed cross-workspace sharing, eliminating duplicate data copies and their cost.</li>
-<li>Publishes applied side projects with interactive write-ups in a public <a href="/mini-projects/">Mini Project Space</a>.</li>
+<li>Modernized legacy metadata formats into a data catalog application built on a customized DataHub fork.</li>
+<li>Ran 20+ technical interviews for data science and engineering roles, assessing coding proficiency and system design.</li>
+<li>Authored a sample RFP proposal demonstrating technical approach and solution design.</li>
+<li>Architected data models that power business growth initiatives.</li>
 </ul>
 </div>
 
 <div class="card">
-<div class="job-head"><strong>GovernmentCIO — Data Scientist</strong><span class="job-date">July 2021 – Apr 2022 · Remote</span></div>
+<div class="job-head"><strong>eSimplicity — AI Data Analyst Fellow</strong><span class="job-date">July 2026 – Present · Remote</span></div>
+<p class="muted" style="margin-top:0">Rapid Innovation Center · internal applied-AI fellowship</p>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>eSimplicity — Senior Data Scientist</strong><span class="job-date">Apr 2022 – Aug 2023 · Remote</span></div>
 <ul class="tight">
-<li>Single-handedly automated VA IT infrastructure reporting in R/Python as the team's sole developer; briefed major incident data to Operations Triage Group leadership and presented to 200+ attendees including the VA Chief Information Officer.</li>
-<li>Delivered end-to-end analysis (querying, cleaning, modeling) for 30+ briefs spanning invalid security certificates to telecom outages for the largest U.S. healthcare network, several on one-day turnarounds.</li>
+<li>Built Bash/Python tooling migrating data and metadata from Hadoop to S3 and Hive Metastore to AWS Glue, including parallelized cross-account object migration on EMR.</li>
+<li>Presented applied analytics and data-science workflows in R on Databricks to 150+ CDR users at CCSQ 2023 DataCamp.</li>
 </ul>
 </div>
 
 <div class="card">
-<div class="job-head"><strong>National Human Genome Research Institute (NHGRI) — Bioinformatics Scientist</strong><span class="job-date">Oct 2020 – July 2021 · Bethesda, MD</span></div>
-<ul class="tight">
-<li>Stood up the lab's N3C data-enclave workspace from scratch; secured data use agreements for COVID-19 EHR pipelines and coached teammates on PySpark/SparkR.</li>
-<li>Curated and analyzed EHR data from millions of patients powering a COVID-19 Phenotype-Wide Association Study (PheWAS).</li>
-<li>Harmonized N3C and All of Us enclave data for a participant comparison study, applying stratified sampling across race, gender, age, and ethnicity to isolate true COVID-19 effects.</li>
-</ul>
+<div class="job-head"><strong>GovernmentCIO — Data Scientist</strong><span class="job-date">2021 – 2022</span></div>
 </div>
 
 <div class="card">
-<div class="job-head"><strong>National Institute of Allergy and Infectious Diseases (NIAID) — Data Science Fellow</strong><span class="job-date">June 2018 – Sept 2020 · Bethesda, MD</span></div>
-<ul class="tight">
-<li>Engineered ETL pipelines and parallelized HPC jobs over 4TB+ of Cerner data to classify rare diseases with machine learning.</li>
-<li>Rebuilt performance and network visualization for SIGNAL, a public genetic screening tool (R Shiny + D3.js), shipping in four months a roadmap scoped for six.</li>
-<li>De-identified 32,000 clinical notes, then trained and benchmarked two NLP models for Human Phenotype Ontology assignment, visualizing results with hierarchical t-SNE renderings.</li>
-<li>Extended the open-source R package <em>ihazr</em>, adding semiparametric hazard regression estimation and visualization for survival analysis.</li>
-<li>Completed five cross-institute data-science rotations: biostatistics, immunology, bioinformatics, grants analytics, epidemiology (detailed on CV).</li>
-</ul>
+<div class="job-head"><strong>NHGRI — Bioinformatics Scientist</strong><span class="job-date">2020 – 2021</span></div>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>NIAID — Data Science Fellow</strong><span class="job-date">2018 – 2020</span></div>
 </div>
 
 <h2>Selected Projects</h2>
 <ul class="tight">
-<li><a href="/mini-projects/readmission-risk/">30-day hospital readmission risk</a>: production-style ML system with FHIR-native feature pipeline, deployed LightGBM model, drift monitoring, and weekly retraining (<a href="https://huggingface.co/spaces/k-webb/readmission-risk">live demo</a>).</li>
-<li><a href="/mini-projects/ss-beneficiary-fraud/">How many fraudulent Social Security beneficiaries are there?</a>: Bayesian estimate from public SSA records, with interactive posteriors.</li>
+<li><a href="/mini-projects/readmission-risk/"><strong>30-day hospital readmission risk</strong></a>: production-style ML system, FHIR-native pipeline, deployed model, drift monitoring.</li>
+<li><a href="/mini-projects/ss-beneficiary-fraud/"><strong>SS beneficiary fraud</strong></a>: Bayesian estimate from public SSA records.</li>
+</ul>
+
+<h2>Technical Skills</h2>
+<p>Python · R · SQL · Linux · Git · Terraform · AWS · Databricks · Spark/PySpark · Airflow (MWAA) · dbt · Docker · MLflow · scikit-learn · LLMs</p>
+
+<h2>Certifications</h2>
+<ul class="tight">
+<li>Databricks Certified Data Engineering Associate (2026)</li>
+<li>AWS Certified Solutions Architect – Associate (2026)</li>
+<li>AWS Certified Cloud Practitioner (2023)</li>
 </ul>
 
 <h2>Education</h2>
@@ -86,16 +96,6 @@
 <li><strong>M.S., Statistics</strong> — Virginia Tech (2015 – 2016)</li>
 <li><strong>B.S., Statistics</strong> — Wake Forest University (2011 – 2015), GPA 3.4/4.0</li>
 </ul>
-
-<h2>Certifications</h2>
-<ul class="tight">
-<li>AWS Certified Cloud Practitioner (2023)</li>
-<li>AWS Certified Solutions Architect – Associate (2026)</li>
-<li>Databricks Certified Data Engineering Associate (2026)</li>
-</ul>
-
-<h2>Technical Skills</h2>
-<p>Python · R · SQL · Linux · Git · Terraform · AWS · Databricks · Spark/PySpark · Airflow (AWS MWAA) · dbt · Docker · MLflow · scikit-learn · LLMs</p>
 </main>
 
 <footer class="site">
