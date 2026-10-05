@@ -45,17 +45,29 @@
 
 <div class="card">
 <div class="job-head"><strong>eSimplicity — Staff Data Scientist</strong><span class="job-date">Sept 2023 – Present · Remote</span></div>
-<p class="muted" style="margin-top:0">AI Data Analyst Fellow, Rapid Innovation Center (internal applied-AI fellowship) · CMS QDAS (Quality Data and Analytics Services)</p>
+<p class="muted" style="margin-top:0">CMS QDAS (Quality Data and Analytics Services)</p>
 <ul class="tight">
-<li>Built a Databricks Apps showcase of applied-AI use cases: a cost-analysis dash app over synthetic spend data (users and Unity Catalog resource groups) with live natural-language Q&A (Claude Sonnet 4.6) via an MCP server; evaluated with pytest and automated Playwright tests.</li>
-<li>Architect data models that power business growth initiatives.</li>
-<li>Authored a mock RFP proposal demonstrating technical approach and solution design.</li>
-<li>Built data-governance workflows enforcing strict role-based access controls for 2,000+ users in a Kinesis-driven repository for portal organizational and user data.</li>
-<li>Modernized legacy metadata formats into a data catalog application built on a customized DataHub fork.</li>
-<li>Established multiple Databricks Delta Shares, cutting data-duplication costs for CMS while enabling governed, read-only sharing across workspaces.</li>
+<li>Migrated AWS Glue to Unity Catalog (approximately 191K tables total) and systematically transitioned SAS-centric pipelines to modular Python and Spark-based engineering, resulting in 50% drop in compute unit costs.</li>
+<li>Developed a copilot agent that standardizes data-pipeline deployments on Databricks.</li>
 <li>Migrated all legacy EMR workloads to Databricks with automated validation, testing, and monitoring — cutting median runtime 82% and median cost 93%.</li>
 <li>Led six DevOps and data engineers delivering scheduled, validated data distributions across 20 CDR sources — terabytes of claims, provider, and beneficiary data via AWS MWAA, Terraform, and Databricks.</li>
+<li>Co-led FinOps and governance frameworks managing approximately $167K in monthly spend.</li>
+<li>Led team to accelerate governance group onboarding from 48-hour SLA to less than 15 minutes for standard access and workspace readiness.</li>
+<li>Built data-governance workflows enforcing strict role-based access controls for 2,000+ users in a Kinesis-driven repository for portal organizational and user data.</li>
+<li>Established multiple Databricks Delta Shares, cutting data-duplication costs for CMS while enabling governed, read-only sharing across workspaces.</li>
+<li>Modernized legacy metadata formats into a data catalog application built on a customized DataHub fork.</li>
 <li>Ran 20+ technical interviews for data science and engineering roles, assessing coding proficiency and system design.</li>
+</ul>
+</div>
+
+<div class="card">
+<div class="job-head"><strong>eSimplicity — AI Data Analyst Fellow</strong><span class="job-date">July 2026 – Present · Remote</span></div>
+<p class="muted" style="margin-top:0">Rapid Innovation Center (internal applied-AI fellowship)</p>
+<ul class="tight">
+<li>Managed a document reader agent that authenticates with HARP OKTA credentials to ingest Confluence, GitHub, and document stores into the Katalyst taxonomy (internal knowledge graph).</li>
+<li>Built a Databricks Apps showcase of applied-AI use cases: a cost-analysis dash app over synthetic spend data (users and Unity Catalog resource groups) with live natural-language Q&A (Claude Sonnet 4.6) via an MCP server; evaluated with pytest and automated Playwright tests.</li>
+<li>Established program taxonomy using eS Katalyst system, creating declarative knowledge graphs expressed as YAML files in git.</li>
+<li>Presented technical marketing research on AI SLA refinement for a CMS bid.</li>
 </ul>
 </div>
 
@@ -63,10 +75,11 @@
 <div class="job-head"><strong>eSimplicity — Senior Data Scientist</strong><span class="job-date">Apr 2022 – Aug 2023 · Remote</span></div>
 <p class="muted" style="margin-top:0">CMS QDAS (Quality Data and Analytics Services)</p>
 <ul class="tight">
-<li>Advised CDR users on data quality, access control, and R/Python development in Databricks notebooks.</li>
-<li>Presented applied analytics and data-science workflows in R on Databricks to 150+ CDR users at CCSQ 2023 DataCamp.</li>
-<li>Built Bash/Python tooling migrating data and metadata from Hadoop to S3 and Hive Metastore to AWS Glue — including parallelized cross-account object migration on EMR.</li>
+<li>Created Bash/Python tooling migrating data and metadata from Hadoop to S3 and Hive Metastore to AWS Glue, including parallelized cross-account object migration on EMR.</li>
 <li>Ran a lineage-tracking pilot with OpenLineage, dbt, and Marquez to evaluate metadata capture and visualization.</li>
+<li>Presented applied analytics and data-science workflows in R on Databricks to 150+ CDR users at CCSQ 2023 DataCamp.</li>
+<li>Built analytics reporting for management using the JIRA API to collect engineer and developer story points over the year.</li>
+<li>Advised CDR users on data quality, access control, and R/Python development in Databricks notebooks.</li>
 </ul>
 </div>
 
@@ -94,7 +107,7 @@
 <li>Built ETL pipelines over 4TB+ of Cerner health data and parallelized HPC jobs training ML classifiers to surface the health effects that matter in rare-disease classification.</li>
 <li>Overhauled computational speed and network visualization for SIGNAL, a public genetic screening tool (R Shiny + JavaScript D3.js) — delivered in four months against a six-month plan.</li>
 <li>De-identified 32,000 clinical notes, then trained and benchmarked two NLP models for Human Phenotype Ontology (HPO) assignment; judged model performance and rendered hierarchical t-SNE visualizations of predictions.</li>
-<li>Extended the open-source R package <em>ihazr</em>, adding semiparametric hazard-regression estimation and visualization.</li>
+<li>Extended the open-source R package <em>ihazr</em>, adding semiparametric hazard-regression estimation and visualization for survival analysis.</li>
 <li>Drove ML analyses for a proteomics study contrasting diseased individuals and controls.</li>
 <li>Applied dimensionality reduction to free-text clinical data, clustering patients with monogenic diseases.</li>
 <li>Kept leadership current with briefings on data-science advances and public-health applications; built software capabilities amplifying the Office's advisory mission institute-wide.</li>
@@ -147,8 +160,8 @@
 
 <h2>Publications</h2>
 <ul class="tight">
-<li>Katz S, Song J, <strong>Webb KP</strong>, et al. SIGNAL: A web-based iterative analysis platform integrating pathway and network approaches optimizes hit selection from genome-scale assays. <em>Cell Systems</em>. 2021. doi:10.1016/j.cels.2021.03.001</li>
-<li>Berenhaut KS, Lidral-Porter BP, Schoen TH, <strong>Webb KP</strong>. Symmetry in Domination for Hypergraphs with Choice. <em>Symmetry</em>. 2017; 9(3):46. doi:10.3390/sym9030046</li>
+<li>Katz S, Song J, <strong>Webb KP</strong>, et al. <a href="https://www.sciencedirect.com/science/article/pii/S2405471221000818">SIGNAL: A web-based iterative analysis platform integrating pathway and network approaches optimizes hit selection from genome-scale assays</a>. <em>Cell Systems</em>. 2021. doi:10.1016/j.cels.2021.03.001</li>
+<li>Berenhaut KS, Lidral-Porter BP, Schoen TH, <strong>Webb KP</strong>. <a href="https://doi.org/10.3390/sym9030046">Symmetry in Domination for Hypergraphs with Choice</a>. <em>Symmetry</em>. 2017; 9(3):46. doi:10.3390/sym9030046</li>
 </ul>
 
 <h2>Service</h2>
